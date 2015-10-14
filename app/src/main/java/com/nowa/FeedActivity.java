@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -14,6 +17,7 @@ import com.nowa.com.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class FeedActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,6 +36,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         posts = new ArrayList<>();
         btnSend = (ImageView) findViewById(R.id.btn_send_message);
         txtMessage = (EditText) findViewById(R.id.txt_message);
+        AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.txt_message);
         btnSend.setOnClickListener(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
