@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".FeedActivity" />
         <activity android:name=".FollowingActivity" />
+        <activity android:name=".SubjectFeedActivity" />
     </application>
 
 </manifest>

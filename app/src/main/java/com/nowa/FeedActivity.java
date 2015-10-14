@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.nowa.com.adapter.FeedAdapter;
 import com.nowa.com.domain.Post;
 import com.nowa.com.domain.User;
+import com.nowa.com.utils.Parameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,6 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     private FeedAdapter mAdapter;
     private List<Post> posts;
     private ImageView btnSend;
-    private User user;
     private EditText txtMessage;
 
     @Override
@@ -46,10 +46,13 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadFeed() {
-        user = new User("@maychell", "fdlkfhsdjbfablkjrehjl123", "maychell", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
-        posts.add(new Post("10/12/2014", "19:12", user, "@Algebra20152 Prova MUUUUUITO DOIDA!!!!"));
-        posts.add(new Post("10/12/2014", "19:12", user, "@PIU20152 Atividade pra amanhã, galera :x"));
-        posts.add(new Post("10/12/2014", "19:12", user, "@DEVAndroid #Notas lancadas :p"));
+        User user1 = new User("@maychell", "fdlkfhsdjbfablkjrehjl123", "Maychell Fernandes", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
+        User user2 = new User("@rafaelfq", "fdlkfhsdjbfablkjrehjl123", "Rafael Fernandes", "Engenharia de Software", "null", "20104324", "rafael_v1d4_l0k4@hotmail.com");
+        User user3 = new User("@itamirxd", "fdlkfhsdjbfablkjrehjl123", "Itamir Francisco", "Ciência da Computação", "null", "120334345", "itamir_ufrn@hotmail.com");
+
+        posts.add(new Post("10/12/2014", "19:12", user1, "@Algebra20152 Prova MUUUUUITO DOIDA!!!!"));
+        posts.add(new Post("10/12/2014", "19:12", user2, "@PIU20152 Atividade pra amanhã, galera :x"));
+        posts.add(new Post("10/12/2014", "19:12", user3, "@DEVAndroid #Notas lancadas :p"));
         /*
         posts.add(new Post("10/12/2014", "19:12", user, "@Algebra20152 Prova MUUUUUITO DOIDA!!!![2]"));
         posts.add(new Post("10/12/2014", "19:12", user, "@Algebra20152 Nao aguento mais provas!!"));
@@ -64,7 +67,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_send_message) {
-            posts.add(new Post("10/12/2014", "19:12", user, txtMessage.getText().toString()));
+            posts.add(new Post("10/12/2014", "19:12", Parameter.user, txtMessage.getText().toString()));
             mAdapter = new FeedAdapter(this, posts);
             mRecyclerView.setAdapter(mAdapter);
             txtMessage.setText("");
