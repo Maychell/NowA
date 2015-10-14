@@ -2,6 +2,9 @@ package com.nowa.com.dao;
 
 import android.content.Context;
 
+import com.nowa.com.cloudUtils.CloudQueries;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,34 +18,46 @@ public class GeneralDao {
         this.ctx=ctx;
     }
 
-    public boolean service(String methodName, Map<String, String> params, boolean cloudPersist) {
+    public boolean service(String methodName, String className, HashMap<String, String> params, boolean cloudPersist) {
         boolean result=false;
         switch (methodName) {
             case "save":
-                result=save(params, cloudPersist);
+                result=save(className, params, cloudPersist);
             case "delete":
-                result=delete(params);
+                result=delete(className, params, cloudPersist);
         }
         return result;
     }
 
-    public boolean save(Map<String, String> params, boolean cloudPersist) {
+    public boolean save(String className, HashMap<String, String> params, boolean cloudPersist) {
         if(params.get("id").equals(""))
-            insert(params, cloudPersist);
+            insert(className, params, cloudPersist);
         else
-            update(params, cloudPersist);
+            update(className, params, cloudPersist);
         return true;
     }
 
-    private boolean insert(Map<String, String> params, boolean cloudPersist) {
+    private boolean insert(String className, HashMap<String, String> params, boolean cloudPersist) {
+        if(cloudPersist) {
+            CloudQueries cloud = new CloudQueries(ctx);
+            cloud.saveInBackGround(className, params);
+        }
         return true;
     }
 
-    private boolean update(Map<String, String> params, boolean cloudPersist) {
+    private boolean update(String className, HashMap<String, String> params, boolean cloudPersist) {
+        if(cloudPersist) {
+            CloudQueries cloud = new CloudQueries(ctx);
+            cloud.updateInBackground(className, params, params.get("id"));
+        }
         return true;
     }
 
-    public boolean delete(Map<String, String> params) {
+    private boolean delete(String className, HashMap<String, String> params, boolean cloudPersist) {
+        if(cloudPersist) {
+            CloudQueries cloud = new CloudQueries(ctx);
+            cloud.deleteObject(className, "id", params.get("id"));
+        }
         return true;
     }
 }

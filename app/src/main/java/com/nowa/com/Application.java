@@ -1,5 +1,7 @@
 package com.nowa.com;
 
+import com.parse.Parse;
+
 /**
  * Created by maychellfernandesdeoliveira on 13/10/2015.
  */
@@ -10,6 +12,6 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
+        Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
     }
 }
