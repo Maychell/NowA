@@ -9,11 +9,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.nowa.com.adapter.FeedAdapter;
+import com.nowa.com.dao.GeneralDao;
 import com.nowa.com.domain.Post;
 import com.nowa.com.domain.User;
 import com.nowa.com.utils.Parameter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FeedActivity extends AppCompatActivity implements View.OnClickListener {
@@ -46,6 +48,11 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadFeed() {
+
+        GeneralDao generalDao = new GeneralDao(this);
+        posts = generalDao.getPosts();
+
+        /*
         User user1 = new User("@maychell", "fdlkfhsdjbfablkjrehjl123", "Maychell Fernandes", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
         User user2 = new User("@rafaelfq", "fdlkfhsdjbfablkjrehjl123", "Rafael Fernandes", "Engenharia de Software", "null", "20104324", "rafael_v1d4_l0k4@hotmail.com");
         User user3 = new User("@itamirxd", "fdlkfhsdjbfablkjrehjl123", "Itamir Francisco", "Ciência da Computação", "null", "120334345", "itamir_ufrn@hotmail.com");
@@ -67,10 +74,23 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_send_message) {
-            posts.add(new Post("10/12/2014", "19:12", Parameter.user, txtMessage.getText().toString()));
+            Post post = new Post("14/10/2015", "19:12", Parameter.user, txtMessage.getText().toString());
+            posts.add(post);
+
+            HashMap<String, String> params = new HashMap<>();
+            params.put(Post._ID, "");
+            params.put(Post.DATE, post.getDate());
+            params.put(Post.TIME, post.getTime());
+            params.put(Post.USER, post.getUser().getId());
+            params.put(Post.MESSAGE, post.getMessage());
+
+            GeneralDao generalDao = new GeneralDao(this);
+            generalDao.service("save", "post", params, true);
+
             mAdapter = new FeedAdapter(this, posts);
             mRecyclerView.setAdapter(mAdapter);
             txtMessage.setText("");
+            //loadFeed();
         }
     }
 }

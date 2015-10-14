@@ -54,6 +54,7 @@ public class User extends Entity {
      * @param email
      */
     public User(String id, String login, String token, String name, String course, String description, String registerNumber, String email) {
+        this.setId(id);
         this.login = login;
         this.token = token;
         this.name = name;
