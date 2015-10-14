@@ -1,5 +1,7 @@
 package com.nowa.com.adapter;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.nowa.R;
 import com.nowa.com.domain.Post;
+import com.nowa.com.utils.UserInformationDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,12 +43,21 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CustomViewHold
 
     @Override
     public void onBindViewHolder(FeedAdapter.CustomViewHolder customViewHolder, int i) {
-        Post post = posts.get(i);
+        final Post post = posts.get(i);
 
         //Setting text view title
         customViewHolder.user.setText(post.getUser().getName());
         customViewHolder.datetime.setText(convertDate(post.getDate())+" - "+post.getTime());
         customViewHolder.message.setText(post.getMessage());
+
+        customViewHolder.user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = ((Activity) ctx).getFragmentManager();
+                UserInformationDialog userDialog = new UserInformationDialog(ctx, post.getUser());
+                userDialog.show(fm, "");
+            }
+        });
     }
 
     private String convertDate(String date) {

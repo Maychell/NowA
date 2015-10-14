@@ -46,7 +46,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadFeed() {
-        user = new User("@maychell", "fdlkfhsdjbfablkjrehjl123", "maychell");
+        user = new User("@maychell", "fdlkfhsdjbfablkjrehjl123", "maychell", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
         posts.add(new Post("10/12/2014", "19:12", user, "@Algebra20152 Prova MUUUUUITO DOIDA!!!!"));
         posts.add(new Post("10/12/2014", "19:12", user, "@PIU20152 Atividade pra amanhã, galera :x"));
         posts.add(new Post("10/12/2014", "19:12", user, "@DEVAndroid #Notas lancadas :p"));

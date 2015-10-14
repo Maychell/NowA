@@ -1,4 +1,4 @@
-package com.nowa.com;
+package com.nowa;
 
 import com.parse.Parse;
 
