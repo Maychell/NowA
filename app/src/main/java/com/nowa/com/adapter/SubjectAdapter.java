@@ -1,6 +1,7 @@
 package com.nowa.com.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nowa.R;
-import com.nowa.com.domain.Post;
+import com.nowa.SubjectFeedActivity;
 import com.nowa.com.domain.Subject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,7 +29,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.CustomVi
     }
 
     @Override
-    public SubjectAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public SubjectAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, final int i) {
         LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.subject_list_row, null);
 
@@ -40,7 +38,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.CustomVi
     }
 
     @Override
-    public void onBindViewHolder(SubjectAdapter.CustomViewHolder customViewHolder, int i) {
+    public void onBindViewHolder(SubjectAdapter.CustomViewHolder customViewHolder, final int i) {
         Subject subject = subjects.get(i);
 
         //Setting text view title
@@ -53,6 +51,15 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.CustomVi
 
         customViewHolder.subjectName.setText(subject.getName());
         customViewHolder.subjectFollowers.setText("10");
+
+        customViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(ctx, SubjectFeedActivity.class);
+                SubjectFeedActivity.subject = subjects.get(i);
+                ctx.startActivity(it);
+            }
+        });
     }
 
     @Override

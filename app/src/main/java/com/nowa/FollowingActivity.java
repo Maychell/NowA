@@ -22,7 +22,6 @@ public class FollowingActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private SubjectAdapter mAdapter;
-    private List<Subject> subjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

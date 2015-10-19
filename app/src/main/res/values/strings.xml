@@ -3,4 +3,11 @@
     <string name="action_settings">Settings</string>
     <string name="add_comment">Escreva para uma turma</string>
     <string name="followers">Seguidores:</string>
+    <string name="user_data">Dados do Usuário:</string>
+    <string name="course">Curso:</string>
+    <string name="register_number">Matrícula:</string>
+    <string name="user">Usuário:</string>
+    <string name="description">Descrição:</string>
+    <string name="email">Email:</string>
+    <string name="close">Fechar</string>
 </resources>
