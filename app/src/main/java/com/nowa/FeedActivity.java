@@ -41,6 +41,9 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    //metodo para pegar turmas no sigaa, salvar na nuvem e pega-las da nuvem
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -75,7 +78,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v.getId() == R.id.btn_send_message) {
             Post post = new Post("14/10/2015", "19:12", Parameter.user, txtMessage.getText().toString());
-            posts.add(post);
+            //posts.add(post);
 
             HashMap<String, String> params = new HashMap<>();
             params.put(Post._ID, "");
@@ -87,10 +90,12 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
             GeneralDao generalDao = new GeneralDao(this);
             generalDao.service("save", "post", params, true);
 
+            /*
             mAdapter = new FeedAdapter(this, posts);
             mRecyclerView.setAdapter(mAdapter);
+            */
             txtMessage.setText("");
-            //loadFeed();
+            loadFeed();
         }
     }
 }

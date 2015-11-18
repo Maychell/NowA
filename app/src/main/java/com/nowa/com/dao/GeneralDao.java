@@ -54,10 +54,10 @@ public class GeneralDao {
     }
 
     public boolean save(String className, HashMap<String, String> params, boolean cloudPersist) {
-        //if(params.get("id").equals(""))
+        if(params.get("id").equals(""))
             insert(className, params, cloudPersist);
-        //else
-            //update(className, params, cloudPersist);
+        else
+            update(className, params, cloudPersist);
         return true;
     }
 
