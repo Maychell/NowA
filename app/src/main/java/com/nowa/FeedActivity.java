@@ -4,14 +4,19 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.MultiAutoCompleteTextView;
 
 import com.nowa.com.adapter.FeedAdapter;
 import com.nowa.com.dao.GeneralDao;
 import com.nowa.com.domain.Post;
-import com.nowa.com.domain.User;
+import com.nowa.com.utils.CustomTokenizer;
 import com.nowa.com.utils.Parameter;
 
 import java.util.ArrayList;
@@ -24,8 +29,21 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     private FeedAdapter mAdapter;
     private List<Post> posts;
     private ImageView btnSend;
-    private EditText txtMessage;
+    private MultiAutoCompleteTextView txtMessage;
 
+    private String[] language = new String[] {
+            "abc",
+            "abcd",
+            "abcde",
+            "abcdef",
+            "abcdefg",
+            "@hij",
+            "@hijk",
+            "@hijkl",
+            "@hijklm",
+            "@hijklmn",
+    };
+//    String[] language ={"C","C++","Java",".NET","iPhone","Android","ASP.NET","PHP"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +51,12 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
 
         posts = new ArrayList<>();
         btnSend = (ImageView) findViewById(R.id.btn_send_message);
-        txtMessage = (EditText) findViewById(R.id.txt_message);
+        txtMessage = (MultiAutoCompleteTextView) findViewById(R.id.mult_txt_message);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.support.v7.appcompat.R.layout.select_dialog_item_material, language);
+        txtMessage.setAdapter(adapter);
+        txtMessage.setThreshold(2);
+        txtMessage.setTokenizer(new CustomTokenizer());
         btnSend.setOnClickListener(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
