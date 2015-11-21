@@ -14,7 +14,11 @@ public class DatabaseScript extends Database {
             //Subject
             "CREATE TABLE subject (id VARCHAR(240) PRIMARY KEY, subject_code VARCHAR(8) NOT NULL, name VARCHAR(240) NOT NULL, name_sigaa VARCHAR(240) NOT NULL, picture VARCHAR(240) NOT NULL);",
             //Post
-            "CREATE TABLE post (id VARCHAR(240) PRIMARY KEY, date VARCHAR(15) NOT NULL, time VARCHAR(8) NOT NULL, id_user VARCHAR(240) NOT NULL, message VARCHAR(240) NOT NULL, FOREIGN KEY (id_user) REFERENCES user(id));",
+            "CREATE TABLE post (id VARCHAR(240) PRIMARY KEY, date VARCHAR(15) NOT NULL, time VARCHAR(8) NOT NULL, id_user VARCHAR(240) NOT NULL, message VARCHAR(240) NOT NULL, id_subject VARCHAR(240), FOREIGN KEY (id_user) REFERENCES user(id), FOREIGN KEY (id_subject) REFERENCES subject(id));",
+			//Hashtag
+			"CREATE TABLE hashtag (id VARCHAR(240) PRIMARY KEY, name VARCHAR(240) NOT NULL);",
+			//Hashtag_post
+			"CREATE TABLE hashtag_post (id_post VARCHAR(240) NOT NULL, id_hashtag VARCHAR(240), FOREIGN KEY (id_post) REFERENCES post(id), FOREIGN KEY (id_hashtag) REFERENCES hashtag(id));",
 	};
 
 	private SQLiteHelper dbHelper;

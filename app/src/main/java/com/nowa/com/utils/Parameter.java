@@ -25,4 +25,6 @@ public class Parameter {
 
         return subjectTagging;
     }
+
+    public static final String MY_PREFERENCES = "NowaMyPrefs";
 }

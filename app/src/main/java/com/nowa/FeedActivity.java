@@ -144,7 +144,8 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_send_message) {
-            Post post = new Post("14/10/2015", "19:12", Parameter.user, txtMessage.getText().toString());
+
+            Post post = new Post("14/10/2015", "19:12", Parameter.user, txtMessage.getText().toString(), new Subject());
 
             DaoPost daoPost = null;
             try {

@@ -54,7 +54,7 @@ public class SubjectFeedActivity extends AppCompatActivity {
     private void loadFeed() {
         User user1 = new User("@maychell", "fdlkfhsdjbfablkjrehjl123", "Maychell Fernandes", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
 
-        posts.add(new Post("10/12/2014", "19:12", user1, "@Algebra20152 Prova MUUUUUITO DOIDA!!!!"));
+        posts.add(new Post("10/12/2014", "19:12", user1, "@Algebra20152 Prova MUUUUUITO DOIDA!!!!", new Subject()));
 
         mAdapter = new FeedAdapter(this, posts);
         mRecyclerView.setAdapter(mAdapter);

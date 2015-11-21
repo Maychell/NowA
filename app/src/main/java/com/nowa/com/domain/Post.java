@@ -6,13 +6,14 @@ package com.nowa.com.domain;
 public class Post extends Entity {
 
     public final static String[] COLUMNS = new String[] {
-            Post._ID, Post.DATE, Post.TIME, Post.USER, Post.MESSAGE
+            Post._ID, Post.DATE, Post.TIME, Post.USER, Post.MESSAGE, Post.SUBJECT
     };
 
     private String date;
     private String time;
     private User user;
     private String message;
+    private Subject subject;
 
     /**
      * Default constructor
@@ -25,12 +26,14 @@ public class Post extends Entity {
      * @param time
      * @param user
      * @param message
+     * @param subject
      */
-    public Post(String date, String time, User user, String message) {
+    public Post(String date, String time, User user, String message, Subject subject) {
         this.date = date;
         this.time = time;
         this.user = user;
         this.message = message;
+        this.subject = subject;
     }
 
     /**
@@ -40,13 +43,15 @@ public class Post extends Entity {
      * @param time
      * @param user
      * @param message
+     * @param subject
      */
-    public Post(String id, String date, String time, User user, String message) {
+    public Post(String id, String date, String time, User user, String message, Subject subject) {
         this.setId(id);
         this.date = date;
         this.time = time;
         this.user = user;
         this.message = message;
+        this.subject = subject;
     }
 
     public String getDate() {
@@ -71,9 +76,16 @@ public class Post extends Entity {
     public void setMessage(String message) {
         this.message = message;
     }
+    public Subject getSubject() {
+        return subject;
+    }
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
 
     public final static String DATE="date";
     public final static String TIME="time";
     public final static String USER="id_user";
     public final static String MESSAGE="message";
+    public final static String SUBJECT="id_subject";
 }

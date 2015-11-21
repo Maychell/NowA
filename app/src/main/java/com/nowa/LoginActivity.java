@@ -1,6 +1,7 @@
 package com.nowa;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,9 +13,13 @@ import com.nowa.FeedActivity;
 import com.nowa.MainActivity;
 import com.nowa.R;
 import com.nowa.com.cloudUtils.CloudQueries;
+import com.nowa.com.dao.DaoUser;
 import com.nowa.com.database.Database;
 import com.nowa.com.database.DatabaseScript;
 import com.nowa.com.domain.Subject;
+import com.nowa.com.domain.User;
+import com.nowa.com.utils.Parameter;
+import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +32,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button btnLogin;
     private EditText txtLogin, txtPassword;
+    private SharedPreferences sharedpreferences;
 
     private Database db;
 
@@ -43,7 +49,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         btnLogin.setOnClickListener(this);
 
-        //populateCloudDatabase();
+        checkLoggedIn();
+    }
+
+    private void checkLoggedIn() {
+        sharedpreferences = getSharedPreferences(Parameter.MY_PREFERENCES, this.MODE_PRIVATE);
+
     }
 
     /*
@@ -197,9 +208,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_login) {
-            Intent it = new Intent(this, MainActivity.class);
-            startActivity(it);
+            if(authorized()) {
+                Intent it = new Intent(this, MainActivity.class);
+                startActivity(it);
+            } else
+                Toast.makeText(this, "Usuário não encontrado. Tente novamente.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean authorized() {
+        boolean authorized = false;
+
+        DaoUser daoUser = null;
+        try {
+            daoUser = new DaoUser(this);
+            String user_id = sharedpreferences.getString("User", null);
+            if(user_id != null) {
+                daoUser.getUserById(user_id);
+                return true;
+            }
+
+            User user = daoUser.getUser(txtLogin.getText().toString(), txtPassword.getText().toString());
+            if (user != null) {
+                authorized = true;
+                Parameter.user = user;
+
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+
+                editor.putString("User", Parameter.user.getId());
+                editor.commit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return authorized;
     }
 
     @Override
@@ -208,6 +251,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             db.close();
         super.onDestroy();
     }
-
-    //metodo para validar login
 }

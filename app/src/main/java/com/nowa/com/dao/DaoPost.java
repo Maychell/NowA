@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.nowa.com.cloudUtils.CloudQueries;
 import com.nowa.com.domain.Post;
+import com.nowa.com.domain.Subject;
 import com.nowa.com.domain.User;
 import com.nowa.com.utils.Parameter;
 import com.parse.ParseObject;
@@ -45,8 +46,10 @@ public class DaoPost extends GeneralDao {
         for(ParseObject obj : result) {
             User u = new User();
             u.setId(obj.get(Post.USER).toString());
+            Subject subject = new Subject();
+            subject.setId(obj.get(Post.SUBJECT).toString());
             Post post = new Post(obj.get(Post._ID).toString(), obj.get(Post.DATE).toString(), obj.get(Post.TIME).toString(),
-                    Parameter.user, obj.get(Post.MESSAGE).toString());
+                    Parameter.user, obj.get(Post.MESSAGE).toString(), subject);
             posts.add(post);
         }
 
