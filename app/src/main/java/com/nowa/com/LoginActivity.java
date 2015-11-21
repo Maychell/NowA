@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.nowa.FeedActivity;
+import com.nowa.MainActivity;
 import com.nowa.R;
 
 /**
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_login) {
-            Intent it = new Intent(this, FeedActivity.class);
+            Intent it = new Intent(this, MainActivity.class);
             startActivity(it);
         }
     }
