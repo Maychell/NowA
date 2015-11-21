@@ -6,7 +6,7 @@ package com.nowa.com.domain;
 public class User extends Entity {
 
     public final static String[] COLUMNS = new String[] {
-            User._ID, User.LOGIN, User.TOKEN, User.NAME, User.COURSE, User.DESCRIPTION, User.REGISTER_NUMBER
+            User._ID, User.LOGIN, User.TOKEN, User.NAME, User.COURSE, User.DESCRIPTION, User.REGISTER_NUMBER, User.EMAIL
     };
 
     private String login;
@@ -97,4 +97,5 @@ public class User extends Entity {
     public final static String COURSE="course";
     public final static String DESCRIPTION="description";
     public final static String REGISTER_NUMBER="register_number";
+    public final static String EMAIL="email";
 }
