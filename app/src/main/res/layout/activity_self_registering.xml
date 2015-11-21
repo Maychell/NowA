@@ -13,7 +13,7 @@
         android:text="Create your account"
         android:textSize="30dp"
         android:gravity="center"
-        android:layout_weight="5.5" />
+        android:layout_weight="8.0" />
 
     <EditText
         android:id="@+id/txt_name"
@@ -21,17 +21,31 @@
         android:layout_height="wrap_content"
         android:hint="Name"
         android:padding="15dp" />
+
     <EditText
-        android:id="@+id/txt_password"
+        android:id="@+id/txt_login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="Login"
+        android:padding="15dp" />
+
+    <EditText
+        android:id="@+id/txt_course"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Course"
         android:padding="15dp" />
     <EditText
-        android:id="@+id/txt_password_confirmation"
+        android:id="@+id/txt_description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Password confirmation"
+        android:hint="Description"
+        android:padding="15dp" />
+    <EditText
+        android:id="@+id/txt_registration_number"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Registration number"
         android:padding="15dp" />
     <EditText
         android:id="@+id/txt_email"
@@ -41,11 +55,11 @@
         android:padding="15dp" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_create_account"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="ENTRAR"
-        android:layout_marginTop="60dp"
+        android:text="CREATE ACCOUNT"
+        android:layout_marginTop="40dp"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
