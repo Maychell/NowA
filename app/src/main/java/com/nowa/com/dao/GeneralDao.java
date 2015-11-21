@@ -1,8 +1,10 @@
 package com.nowa.com.dao;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.nowa.com.cloudUtils.CloudQueries;
+import com.nowa.com.database.Database;
 import com.nowa.com.domain.Post;
 import com.nowa.com.domain.User;
 import com.nowa.com.utils.Parameter;
@@ -16,50 +18,47 @@ import java.util.Map;
 /**
  * Created by maychellfernandesdeoliveira on 13/10/2015.
  */
-public class GeneralDao {
+public abstract class GeneralDao extends Database {
 
-    private Context ctx;
+    protected Context ctx;
 
     public GeneralDao(Context ctx) {
         this.ctx=ctx;
+        db = this.ctx.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
     }
 
     public boolean service(String methodName, String className, HashMap<String, String> params, boolean cloudPersist) {
         boolean result=false;
         switch (methodName) {
             case "save":
-                result=save(className, params, cloudPersist);
+                result=insert(className, params, cloudPersist);
+            case "update":
+                result=update(className, params, cloudPersist);
             case "delete":
                 result=delete(className, params, cloudPersist);
         }
         return result;
     }
 
-    public List<Post> getPosts() {
-        CloudQueries cloud = new CloudQueries(ctx);
-        List<ParseObject> result = cloud.getAllObjects("post");
+    public abstract Map<String, String> parseObjectToMap(Object obj);
 
-        List<Post> posts = new ArrayList<>();
-
-        for(ParseObject obj : result) {
-            //id, String date, String time, User user, String message
-            User u = new User();
-            u.setId(obj.get(Post.USER).toString());
-            Post post = new Post(obj.get(Post._ID).toString(), obj.get(Post.DATE).toString(), obj.get(Post.TIME).toString(),
-                    Parameter.user, obj.get(Post.MESSAGE).toString());
-            posts.add(post);
-        }
-
-        return posts;
+    /**
+     * To get an cursor with all orderings
+     * @return Cursor
+     * */
+    protected Cursor getAllCursors(String className, String[] columns, String selection) {
+        return db.query(className, columns, selection, null, null, null, null);
     }
 
+    /*
     public boolean save(String className, HashMap<String, String> params, boolean cloudPersist) {
-        if(params.get("id").equals(""))
+        //if(params.get("id").equals(""))
             insert(className, params, cloudPersist);
-        else
-            update(className, params, cloudPersist);
+        //else
+           // update(className, params, cloudPersist);
         return true;
     }
+    */
 
     private boolean insert(String className, HashMap<String, String> params, boolean cloudPersist) {
         if(cloudPersist) {

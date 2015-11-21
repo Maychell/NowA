@@ -14,14 +14,20 @@ import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 
 import com.nowa.com.adapter.FeedAdapter;
+import com.nowa.com.cloudUtils.CloudQueries;
+import com.nowa.com.dao.DaoPost;
+import com.nowa.com.dao.DaoSubject;
 import com.nowa.com.dao.GeneralDao;
 import com.nowa.com.domain.Post;
+import com.nowa.com.domain.Subject;
 import com.nowa.com.utils.CustomTokenizer;
 import com.nowa.com.utils.Parameter;
+import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class FeedActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,7 +37,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView btnSend;
     private MultiAutoCompleteTextView txtMessage;
 
-    private String[] language = new String[] {
+    private String[] language;/* = new String[] {
             "abc",
             "abcd",
             "abcde",
@@ -43,6 +49,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
             "@hijklm",
             "@hijklmn",
     };
+    */
 //    String[] language ={"C","C++","Java",".NET","iPhone","Android","ASP.NET","PHP"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +77,66 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        loadSubjects();
         loadFeed();
+    }
+
+    private void loadSubjects() {
+        DaoSubject daoSubject = null;
+        try {
+            if (Parameter.subjects == null || Parameter.subjects.isEmpty()) {
+                daoSubject = new DaoSubject(this);
+                Parameter.subjects = daoSubject.getSubjects(Parameter.user);
+            }
+            //it means it's the first time that the project is launched
+            if (Parameter.subjects.isEmpty()) {
+                //Get subjects from sigaa.
+                //GET SUBJECTS FROM CLOUD, BECAUSE GET SUBJECTS ON SIGAA ISN'T WORKING§
+                CloudQueries cloudQueries = new CloudQueries(this);
+
+                //Out of 15 getting 4 random subjects
+                List<Integer> numbers = new ArrayList<>();
+                for (int i = 0; i < 4; ++i) {
+                    int randomNum = 0;
+                    do {
+                        Random rand = new Random();
+                        randomNum = rand.nextInt(15) + 1;
+                    } while (numbers.contains(randomNum));
+                    numbers.add(randomNum);
+
+                    List<ParseObject> results = cloudQueries.getObject("subject", "number", "" + randomNum);
+
+                    if (results.size() > 0) {
+                        //Subject(String id, String name, String nameSigaa, String subjectCode)
+                        ParseObject po = results.get(0);
+                        Subject subject = new Subject(po.getObjectId(), po.getString(Subject.NAME), po.getString(Subject.NAME_SIGAA), po.getString(Subject.SUBJECT_CODE));
+                        Parameter.subjects.add(subject);
+                    }
+                }
+
+                daoSubject = new DaoSubject(this);
+                daoSubject.saveAllLocal(Parameter.subjects);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(daoSubject != null)
+                daoSubject.close();
+        }
     }
 
     private void loadFeed() {
 
-        GeneralDao generalDao = new GeneralDao(this);
-        posts = generalDao.getPosts();
+        DaoPost daoPost = null;
+        try {
+            daoPost = new DaoPost(this);
+            posts = daoPost.getPosts();
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(daoPost != null)
+                daoPost.close();
+        }
 
         /*
         User user1 = new User("@maychell", "fdlkfhsdjbfablkjrehjl123", "Maychell Fernandes", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
@@ -110,9 +170,18 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
             params.put(Post.USER, post.getUser().getId());
             params.put(Post.MESSAGE, post.getMessage());
 
-            GeneralDao generalDao = new GeneralDao(this);
-            generalDao.service("save", "post", params, true);
+            DaoPost daoPost = null;
+            try {
+                daoPost = new DaoPost(this);
+                daoPost.service("save", "post", params, true);
+            } catch(Exception e) {
+                e.printStackTrace();
+            } finally {
+                if(daoPost != null)
+                    daoPost.close();
+            }
 
+            post = null;
             /*
             mAdapter = new FeedAdapter(this, posts);
             mRecyclerView.setAdapter(mAdapter);
