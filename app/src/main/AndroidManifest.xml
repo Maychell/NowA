@@ -25,6 +25,10 @@
         <activity android:name=".FeedActivity" />
         <activity android:name=".FollowingActivity" />
         <activity android:name=".SubjectFeedActivity" />
+        <activity
+            android:name=".com.SelfRegisteringActivity"
+            android:label="@string/title_activity_self_registering" >
+        </activity>
     </application>
 
 </manifest>

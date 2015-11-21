@@ -10,37 +10,43 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:text="NowA"
+        android:text="Create your account"
         android:textSize="30dp"
         android:gravity="center"
-        android:layout_weight="4.5" />
+        android:layout_weight="5.5" />
 
     <EditText
-        android:id="@+id/txt_login"
+        android:id="@+id/txt_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Login"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
-
+        android:hint="Name"
+        android:padding="15dp" />
     <EditText
         android:id="@+id/txt_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Senha"
-        android:inputType="textPassword"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:hint="Password"
+        android:padding="15dp" />
+    <EditText
+        android:id="@+id/txt_password_confirmation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password confirmation"
+        android:padding="15dp" />
+    <EditText
+        android:id="@+id/txt_email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="E-mail"
+        android:padding="15dp" />
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="ENTRAR"
+        android:layout_marginTop="60dp"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
-
-
 </LinearLayout>

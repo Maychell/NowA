@@ -10,4 +10,7 @@
     <string name="description">Descrição:</string>
     <string name="email">Email:</string>
     <string name="close">Fechar</string>
+    <string name="title_activity_self_registering">SelfRegisteringActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
