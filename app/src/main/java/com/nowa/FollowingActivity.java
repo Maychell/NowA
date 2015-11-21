@@ -11,6 +11,7 @@ import com.nowa.com.adapter.FeedAdapter;
 import com.nowa.com.adapter.SubjectAdapter;
 import com.nowa.com.domain.Post;
 import com.nowa.com.domain.Subject;
+import com.nowa.com.utils.Parameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +42,16 @@ public class FollowingActivity extends AppCompatActivity {
     }
 
     private void loadSubjects() {
+        /*
         List<Subject> subjects = new ArrayList<>();
 
-        subjects.add(new Subject("Android", "Desenvolvimento Android"));
-        subjects.add(new Subject("Database", "Database"));
-        subjects.add(new Subject("Geometry", "Geometry"));
+        subjects.add(new Subject("@android", "Desenvolvimento Android", "DIM201"));
+        subjects.add(new Subject("@database", "Database", "KF1232"));
+        subjects.add(new Subject("@geometry", "Geometry", "SDF324"));
 
-        mAdapter = new SubjectAdapter(this, subjects);
+        */
+
+        mAdapter = new SubjectAdapter(this, Parameter.subjects);
         mRecyclerView.setAdapter(mAdapter);
     }
 }

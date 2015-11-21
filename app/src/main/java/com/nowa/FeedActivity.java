@@ -4,10 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -17,7 +13,6 @@ import com.nowa.com.adapter.FeedAdapter;
 import com.nowa.com.cloudUtils.CloudQueries;
 import com.nowa.com.dao.DaoPost;
 import com.nowa.com.dao.DaoSubject;
-import com.nowa.com.dao.GeneralDao;
 import com.nowa.com.domain.Post;
 import com.nowa.com.domain.Subject;
 import com.nowa.com.utils.CustomTokenizer;
@@ -37,20 +32,6 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView btnSend;
     private MultiAutoCompleteTextView txtMessage;
 
-    private String[] language;/* = new String[] {
-            "abc",
-            "abcd",
-            "abcde",
-            "abcdef",
-            "abcdefg",
-            "@hij",
-            "@hijk",
-            "@hijkl",
-            "@hijklm",
-            "@hijklmn",
-    };
-    */
-//    String[] language ={"C","C++","Java",".NET","iPhone","Android","ASP.NET","PHP"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,11 +40,6 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         posts = new ArrayList<>();
         btnSend = (ImageView) findViewById(R.id.btn_send_message);
         txtMessage = (MultiAutoCompleteTextView) findViewById(R.id.mult_txt_message);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.support.v7.appcompat.R.layout.select_dialog_item_material, language);
-        txtMessage.setAdapter(adapter);
-        txtMessage.setThreshold(2);
-        txtMessage.setTokenizer(new CustomTokenizer());
         btnSend.setOnClickListener(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -71,14 +47,23 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    //metodo para pegar turmas no sigaa, salvar na nuvem e pega-las da nuvem
-
-
     @Override
     protected void onResume() {
         super.onResume();
         loadSubjects();
+        fillAutocomplete();
         loadFeed();
+    }
+
+    private void fillAutocomplete() {
+        String[] subjectsName = Parameter.getSubjectTagging();
+        if(subjectsName != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.support.v7.appcompat.R.layout.select_dialog_item_material, subjectsName);
+            txtMessage.setAdapter(adapter);
+            txtMessage.setThreshold(1);
+            txtMessage.setTokenizer(new CustomTokenizer());
+        }
     }
 
     private void loadSubjects() {
@@ -107,9 +92,8 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                     List<ParseObject> results = cloudQueries.getObject("subject", "number", "" + randomNum);
 
                     if (results.size() > 0) {
-                        //Subject(String id, String name, String nameSigaa, String subjectCode)
                         ParseObject po = results.get(0);
-                        Subject subject = new Subject(po.getObjectId(), po.getString(Subject.NAME), po.getString(Subject.NAME_SIGAA), po.getString(Subject.SUBJECT_CODE));
+                        Subject subject = new Subject(po.getObjectId(), po.getString(Subject.NAME), po.getString(Subject.NAME_SIGAA), po.getString(Subject.SUBJECT_CODE), po.getString(Subject.PICTURE));
                         Parameter.subjects.add(subject);
                     }
                 }
@@ -161,19 +145,11 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v.getId() == R.id.btn_send_message) {
             Post post = new Post("14/10/2015", "19:12", Parameter.user, txtMessage.getText().toString());
-            //posts.add(post);
-
-            HashMap<String, String> params = new HashMap<>();
-            params.put(Post._ID, "");
-            params.put(Post.DATE, post.getDate());
-            params.put(Post.TIME, post.getTime());
-            params.put(Post.USER, post.getUser().getId());
-            params.put(Post.MESSAGE, post.getMessage());
 
             DaoPost daoPost = null;
             try {
                 daoPost = new DaoPost(this);
-                daoPost.service("save", "post", params, true);
+                daoPost.save(post);
             } catch(Exception e) {
                 e.printStackTrace();
             } finally {
@@ -181,11 +157,6 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                     daoPost.close();
             }
 
-            post = null;
-            /*
-            mAdapter = new FeedAdapter(this, posts);
-            mRecyclerView.setAdapter(mAdapter);
-            */
             txtMessage.setText("");
             loadFeed();
         }

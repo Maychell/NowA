@@ -12,9 +12,9 @@ public class DatabaseScript extends Database {
 	private static final String[] SCRIPT_DATABASE_CREATE = new String[]{
             "CREATE TABLE user (id VARCHAR(240) PRIMARY KEY, login VARCHAR(100) NOT NULL, token VARCHAR(240) NOT NULL, name VARCHAR(240) NOT NULL, course VARCHAR(240) NOT NULL, registerNumber VARCHAR(240) NOT NULL, email VARCHAR(240) NOT NULL);",
             //Subject
-            "CREATE TABLE subject (id VARCHAR(240) PRIMARY KEY, subject_code VARCHAR(8) NOT NULL, name VARCHAR(240) NOT NULL, name_sigaa VARCHAR(240) NOT NULL);",
+            "CREATE TABLE subject (id VARCHAR(240) PRIMARY KEY, subject_code VARCHAR(8) NOT NULL, name VARCHAR(240) NOT NULL, name_sigaa VARCHAR(240) NOT NULL, picture VARCHAR(240) NOT NULL);",
             //Post
-            "CREATE TABLE post (id VARCHAR(240) PRIMARY KEY, date VARCHAR(15) NOT NULL, time VARCHAR(8) NOT NULL, id_user VARCHAR(240) NOT NULL, message VARCHAR(240) NOT NULL, FOREIGN KEY id_user REFERENCES user(id));",
+            "CREATE TABLE post (id VARCHAR(240) PRIMARY KEY, date VARCHAR(15) NOT NULL, time VARCHAR(8) NOT NULL, id_user VARCHAR(240) NOT NULL, message VARCHAR(240) NOT NULL, FOREIGN KEY (id_user) REFERENCES user(id));",
 	};
 
 	private SQLiteHelper dbHelper;

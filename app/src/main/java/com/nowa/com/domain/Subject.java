@@ -6,12 +6,13 @@ package com.nowa.com.domain;
 public class Subject extends Entity {
 
     public final static String[] COLUMNS = new String[] {
-            Subject._ID, Subject.SUBJECT_CODE, Subject.NAME, Subject.NAME_SIGAA
+            Subject._ID, Subject.SUBJECT_CODE, Subject.NAME, Subject.NAME_SIGAA, Subject.PICTURE
     };
 
     private String name;
     private String nameSigaa;
     private String subjectCode;
+    private String picture;
 
     /**
      * Default constructor
@@ -23,10 +24,11 @@ public class Subject extends Entity {
      * @param name
      * @param nameSigaa
      */
-    public Subject(String name, String nameSigaa, String subjectCode) {
+    public Subject(String name, String nameSigaa, String subjectCode, String picture) {
         this.name = name;
         this.nameSigaa = nameSigaa;
         this.subjectCode = subjectCode;
+        this.picture = picture;
     }
 
     /**
@@ -35,11 +37,12 @@ public class Subject extends Entity {
      * @param name
      * @param nameSigaa
      */
-    public Subject(String id, String name, String nameSigaa, String subjectCode) {
+    public Subject(String id, String name, String nameSigaa, String subjectCode, String picture) {
         this.setId(id);
         this.name = name;
         this.nameSigaa = nameSigaa;
         this.subjectCode = subjectCode;
+        this.picture = picture;
     }
 
     public String getName() {
@@ -60,8 +63,15 @@ public class Subject extends Entity {
     public void setSubjectCode(String subjectCode) {
         this.subjectCode = subjectCode;
     }
+    public String getPicture() {
+        return picture;
+    }
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     public final static String NAME="name";
     public final static String NAME_SIGAA="name_sigaa";
     public final static String SUBJECT_CODE="subject_code";
+    public final static String PICTURE="picture";
 }

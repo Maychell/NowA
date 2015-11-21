@@ -28,6 +28,7 @@ public class DaoSubject extends GeneralDao {
         values.put(Subject.NAME, subject.getName());
         values.put(Subject.NAME_SIGAA, subject.getNameSigaa());
         values.put(Subject.SUBJECT_CODE, subject.getSubjectCode());
+        values.put(Subject.PICTURE, subject.getPicture());
 
         return values;
     }
@@ -43,9 +44,10 @@ public class DaoSubject extends GeneralDao {
                 int idxname = c.getColumnIndex(Subject.NAME);
                 int idxnameSigaa = c.getColumnIndex(Subject.NAME_SIGAA);
                 int idxsubjectCode = c.getColumnIndex(Subject.SUBJECT_CODE);
+                int idxpicture = c.getColumnIndex(Subject.PICTURE);
 
                 do{
-                    Subject subject = new Subject(c.getString(idxid), c.getString(idxname), c.getString(idxnameSigaa), c.getString(idxsubjectCode));
+                    Subject subject = new Subject(c.getString(idxid), c.getString(idxname), c.getString(idxnameSigaa), c.getString(idxsubjectCode), c.getString(idxpicture));
 
                     subjects.add(subject);
                 } while(c.moveToNext());

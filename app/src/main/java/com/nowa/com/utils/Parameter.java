@@ -14,5 +14,15 @@ public class Parameter {
 
     public static List<Subject> subjects;
 
+    public static String[] getSubjectTagging() {
+        String[] subjectTagging = null;
+        if(subjects != null) {
+            subjectTagging = new String[subjects.size()];
 
+            for(int i=0; i<subjects.size(); ++i)
+                subjectTagging[i] = subjects.get(i).getName();
+        }
+
+        return subjectTagging;
+    }
 }

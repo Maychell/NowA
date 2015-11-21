@@ -23,10 +23,10 @@ public class DaoPost extends GeneralDao {
     }
 
     @Override
-    public Map<String, String> parseObjectToMap(Object obj) {
+    public HashMap<String, String> parseObjectToMap(Object obj) {
         Post post = (Post) obj;
 
-        Map<String, String> values = new HashMap<>();
+        HashMap<String, String> values = new HashMap<>();
         values.put(Post._ID, post.getId());
         values.put(Post.DATE, post.getDate());
         values.put(Post.TIME, post.getTime());
@@ -51,6 +51,10 @@ public class DaoPost extends GeneralDao {
         }
 
         return posts;
+    }
+
+    public void save(Post post) {
+        service("save", "post", parseObjectToMap(post), true);
     }
 
 }

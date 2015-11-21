@@ -2,19 +2,25 @@ package com.nowa.com.cloudUtils;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import android.content.Context;
 
+import com.nowa.com.dao.GeneralDao;
+import com.nowa.com.domain.Entity;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 public class CloudQueries implements ICloudQueries {
+
+	public interface ILocalPersist {
+		public void localInsert(String className, HashMap<String, String> params);
+	}
 	
 	private List<ParseObject> object = null;
 	private Context ctx;
@@ -37,16 +43,27 @@ public class CloudQueries implements ICloudQueries {
 	}
 
     @Override
-	public void save(String className, HashMap<String, String> keyParameters){
-		ParseObject object = new ParseObject(className);
+	public void save(final String className, final HashMap<String, String> keyParameters){
+		final ParseObject object = new ParseObject(className);
 		Set<String> keys = keyParameters.keySet();
 		for(String key : keys)
-			object.put(key, keyParameters.get(key));
-		try {
-			object.save();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+			object.put(key, keyParameters.get(key) == null ? "" : keyParameters.get(key));
+        object.saveEventually(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    if (keyParameters.containsKey(Entity._ID))
+                        keyParameters.put(Entity._ID, object.getObjectId());
+                    ILocalPersist localPersist = new GeneralDao(ctx) {
+                        @Override
+                        public Map<String, String> parseObjectToMap(Object obj) {
+                            return null;
+                        }
+                    };
+                    localPersist.localInsert(className, keyParameters);
+                }
+            }
+        });
 	}
 
     @Override
