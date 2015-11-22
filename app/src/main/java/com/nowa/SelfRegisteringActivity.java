@@ -42,7 +42,7 @@ public class SelfRegisteringActivity extends AppCompatActivity implements View.O
                 User user = new User(txtLogin.getText().toString(), "jh6faklhfehlf4afhaefoaeo1",
                         txtName.getText().toString(), txtCourse.getText().toString(), txtDescription.getText().toString(),
                         txtRegistrationNumber.getText().toString(), txtEmail.getText().toString());
-                DaoUser userDao = new DaoUser(this);
+                userDao = new DaoUser(this);
                 userDao.save(user);
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -79,9 +79,10 @@ public class SelfRegisteringActivity extends AppCompatActivity implements View.O
     }
 
     private void doesntHaveErrors() throws Exception {
-        if (txtName.getText().equals("") || txtEmail.getText().equals("") || txtLogin.getText().equals("") ||
-                txtCourse.getText().equals("") || txtRegistrationNumber.getText().equals("") ||
-                txtDescription.getText().equals("")) {
+        if (txtName.getText().toString().equals("") || txtEmail.getText().toString().equals("") ||
+                txtLogin.getText().toString().equals("") ||
+                txtCourse.getText().toString().equals("") ||
+                txtRegistrationNumber.getText().toString().equals("")) {
             throw new Exception("Preencha todos os campos.");
         }
         DaoUser userDao = null;

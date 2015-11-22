@@ -236,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         DaoUser daoUser = null;
         try {
             daoUser = new DaoUser(this);
-            User user = daoUser.getUserByLogin(txtLogin.getText().toString(), txtPassword.getText().toString());
+            User user = daoUser.getUserByLogin(txtLogin.getText().toString());
             if (user != null) {
                 authorized = true;
                 Parameter.user = user;
