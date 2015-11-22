@@ -46,7 +46,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CustomViewHold
         final Post post = posts.get(i);
 
         //Setting text view title
-        customViewHolder.user.setText(post.getUser().getName());
+        customViewHolder.user.setText(post.getUser().getLogin());
         customViewHolder.datetime.setText(convertDate(post.getDate())+" - "+post.getTime());
         customViewHolder.message.setText(post.getMessage());
 

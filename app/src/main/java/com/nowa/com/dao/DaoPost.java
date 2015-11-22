@@ -38,16 +38,23 @@ public class DaoPost extends GeneralDao {
         return values;
     }
 
-    public List<Post> getPosts() {
+    public List<Post> getPosts(Map<String, String>... params) {
         CloudQueries cloud = new CloudQueries(ctx);
-        List<ParseObject> result = cloud.getAllObjects("post");
+
+        List<ParseObject> result;
+
+        if(params != null && params.length>0)
+            result = cloud.getObject("post", params[0].entrySet().iterator().next().getKey(),
+                    params[0].entrySet().iterator().next().getValue());
+        else
+            result = cloud.getAllObjects("post");
 
         List<Post> posts = new ArrayList<>();
 
         for(ParseObject obj : result) {
             User u = new User();
             u.setId(obj.get(Post.USER).toString());
-            List<ParseObject> userResults = cloud.getObject("user", User._ID, u.getId());
+            List<ParseObject> userResults = cloud.getObject("user", "objectId", u.getId());
 
             if(userResults != null && !userResults.isEmpty()) {
                 ParseObject userParse = userResults.get(0);
@@ -63,7 +70,7 @@ public class DaoPost extends GeneralDao {
             Subject subject = new Subject();
             subject.setId(obj.get(Post.SUBJECT).toString());
             Post post = new Post(obj.get(Post._ID).toString(), obj.get(Post.DATE).toString(), obj.get(Post.TIME).toString(),
-                    Parameter.user, obj.get(Post.MESSAGE).toString(), subject);
+                    u, obj.get(Post.MESSAGE).toString(), subject);
             posts.add(post);
         }
 
