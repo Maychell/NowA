@@ -37,12 +37,12 @@ public class DaoUser extends GeneralDao {
         return values;
     }
 
-    public User getUser(String username, String password) {
+    public User getUserByLogin(String login) {
         User user = null;
 
         CloudQueries cloudQueries = new CloudQueries(ctx);
 
-        List<ParseObject> results = cloudQueries.getObject("user", User.LOGIN, username);
+        List<ParseObject> results = cloudQueries.getObject("user", User.LOGIN, login);
 
         if(results != null && !results.isEmpty()) {
             ParseObject po = results.get(0);

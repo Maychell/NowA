@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.nowa.R;
 import com.nowa.com.dao.DaoUser;
 import com.nowa.com.domain.User;
 
@@ -36,15 +35,21 @@ public class SelfRegisteringActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_create_account) {
-            if(doesntHaveErrors()) {
+        if (v.getId() == R.id.btn_create_account) {
+            DaoUser userDao = null;
+            try {
+                doesntHaveErrors();
                 User user = new User(txtLogin.getText().toString(), "jh6faklhfehlf4afhaefoaeo1",
                         txtName.getText().toString(), txtCourse.getText().toString(), txtDescription.getText().toString(),
                         txtRegistrationNumber.getText().toString(), txtEmail.getText().toString());
                 DaoUser userDao = new DaoUser(this);
                 userDao.save(user);
-            } else
-                Toast.makeText(this, "Preencha todos os campos.", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            } finally {
+                if (userDao != null)
+                    userDao.close();
+            }
         }
     }
 
@@ -73,14 +78,23 @@ public class SelfRegisteringActivity extends AppCompatActivity implements View.O
         txtEmail = (EditText) findViewById(R.id.txt_email);
     }
 
-    private boolean doesntHaveErrors() {
+    private void doesntHaveErrors() throws Exception {
         if (txtName.getText().equals("") || txtEmail.getText().equals("") || txtLogin.getText().equals("") ||
                 txtCourse.getText().equals("") || txtRegistrationNumber.getText().equals("") ||
                 txtDescription.getText().equals("")) {
-            return false;
+            throw new Exception("Preencha todos os campos.");
         }
-
-        return true;
+        DaoUser userDao = null;
+        try {
+            userDao = new DaoUser(this);
+            User registeredUser = userDao.getUserByLogin(txtLogin.getText().toString());
+            if (registeredUser != null) {
+                throw new Exception("Já existe um usuário com este login.");
+            }
+        } finally {
+            if (userDao != null)
+                userDao.close();
+        }
     }
 
     private void cleanData() {

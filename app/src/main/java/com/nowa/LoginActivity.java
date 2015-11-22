@@ -9,21 +9,11 @@ import android.widget.EditText;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.nowa.FeedActivity;
-import com.nowa.MainActivity;
-import com.nowa.R;
-import com.nowa.com.cloudUtils.CloudQueries;
 import com.nowa.com.dao.DaoUser;
 import com.nowa.com.database.Database;
 import com.nowa.com.database.DatabaseScript;
-import com.nowa.com.domain.Subject;
 import com.nowa.com.domain.User;
 import com.nowa.com.utils.Parameter;
-import com.parse.ParseObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by maychellfernandesdeoliveira on 16/11/2015.
@@ -246,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         DaoUser daoUser = null;
         try {
             daoUser = new DaoUser(this);
-            User user = daoUser.getUser(txtLogin.getText().toString(), txtPassword.getText().toString());
+            User user = daoUser.getUserByLogin(txtLogin.getText().toString(), txtPassword.getText().toString());
             if (user != null) {
                 authorized = true;
                 Parameter.user = user;

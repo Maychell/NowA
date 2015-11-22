@@ -35,6 +35,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Course"
+        android:inputType="textPersonName"
         android:padding="15dp" />
     <EditText
         android:id="@+id/txt_description"
