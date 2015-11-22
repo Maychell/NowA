@@ -27,8 +27,7 @@
         <activity android:name=".FollowingActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SubjectFeedActivity" />
         <activity
-            android:name=".SelfRegisteringActivity"
-            android:label="@string/title_activity_self_registering" >
+            android:name=".SelfRegisteringActivity" android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

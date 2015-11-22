@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nowa.com.dao.DaoUser;
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button btnLogin, btnSignUp;
     private EditText txtLogin, txtPassword;
+    private TextView txtSignUp;
     private SharedPreferences sharedpreferences;
 
     private Database db;
@@ -32,16 +34,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         btnLogin = (Button) findViewById(R.id.btn_login);
-        btnSignUp = (Button) findViewById(R.id.btn_sign_up);
         txtLogin = (EditText) findViewById(R.id.txt_login);
         txtPassword = (EditText) findViewById(R.id.txt_password);
+        txtSignUp = (TextView) findViewById(R.id.txt_sign_up);
 
         db = new DatabaseScript(this);
 
         sharedpreferences = getSharedPreferences(Parameter.MY_PREFERENCES, this.MODE_PRIVATE);
 
         btnLogin.setOnClickListener(this);
-        btnSignUp.setOnClickListener(this);
+        txtSignUp.setOnClickListener(this);
 
         //checkLoggedIn();
     }
@@ -224,10 +226,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(it);
             } else
                 Toast.makeText(this, "Usuário não encontrado. Tente novamente.", Toast.LENGTH_SHORT).show();
-        } else if(v.getId() == R.id.btn_sign_up) {
+        } else if(v.getId() == R.id.txt_sign_up) {
             Intent it = new Intent(this, SelfRegisteringActivity.class);
             startActivity(it);
         }
+
     }
 
     private boolean authorized() {

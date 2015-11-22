@@ -11,6 +11,10 @@
     <string name="email">Email:</string>
     <string name="close">Fechar</string>
     <string name="title_activity_self_registering">SelfRegisteringActivity</string>
-
     <string name="hello_world">Hello world!</string>
+
+    <color name="bg_color">#A183E2</color>
+    <color name="btn_bg_color">#4B2F7B</color>
+    <color name="title_color">#4B2F7B</color>
+    <color name="white">#FFFFFF</color>
 </resources>

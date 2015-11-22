@@ -5,50 +5,66 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:padding="5dp"
-    android:weightSum="10" >
-
+    android:weightSum="10"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@color/bg_color">
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:text="NowA"
         android:textSize="30dp"
         android:gravity="center"
-        android:layout_weight="4.5" />
+        android:layout_weight="4.5"
+        android:layout_marginLeft="10dp"/>
 
     <EditText
         android:id="@+id/txt_login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Login"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:background="@color/white"
+        android:padding="8dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp" />
 
     <EditText
         android:id="@+id/txt_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Senha"
+        android:background="@color/white"
         android:inputType="textPassword"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:padding="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"/>
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="ENTRAR"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:textColor="@color/white"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textStyle="bold"
+        android:background="@color/btn_bg_color" />
 
-    <Button
-        android:id="@+id/btn_sign_up"
+    <TextView
+        android:id="@+id/txt_sign_up"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="CADASTRAR"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:onClick="onClick"
+        android:text="Ainda não é cadastrado?"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:gravity="center"
+        android:textColor="@color/white" />
 
 </LinearLayout>

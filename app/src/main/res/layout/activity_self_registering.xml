@@ -1,71 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="5dp"
-    android:weightSum="10" >
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="5dp"
+        android:weightSum="10"
+        android:orientation="vertical">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:textStyle="bold"
+                android:text="Create your account"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:textColor="@color/title_color"
+                android:layout_weight="10.0"
+                android:layout_marginBottom="10dp"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:text="Create your account"
-        android:textSize="30dp"
-        android:gravity="center"
-        android:layout_weight="8.0" />
+            <EditText
+                android:id="@+id/txt_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:inputType="textPersonName"
+                android:padding="15dp" />
 
-    <EditText
-        android:id="@+id/txt_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        android:padding="15dp" />
+            <EditText
+                android:id="@+id/txt_login"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Login"
+                android:padding="15dp" />
 
-    <EditText
-        android:id="@+id/txt_login"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Login"
-        android:padding="15dp" />
+            <EditText
+                android:id="@+id/txt_course"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Course"
+                android:inputType="textPersonName"
+                android:padding="15dp" />
+            <EditText
+                android:id="@+id/txt_description"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:padding="15dp" />
+            <EditText
+                android:id="@+id/txt_registration_number"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Registration number"
+                android:inputType="number"
+                android:maxLength="10"
+                android:padding="15dp" />
+            <EditText
+                android:id="@+id/txt_email"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress"
+                android:padding="15dp" />
 
-    <EditText
-        android:id="@+id/txt_course"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Course"
-        android:inputType="textPersonName"
-        android:padding="15dp" />
-    <EditText
-        android:id="@+id/txt_description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description"
-        android:padding="15dp" />
-    <EditText
-        android:id="@+id/txt_registration_number"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Registration number"
-        android:inputType="number"
-        android:maxLength="10"
-        android:padding="15dp" />
-    <EditText
-        android:id="@+id/txt_email"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="E-mail"
-        android:inputType="textEmailAddress"
-        android:padding="15dp" />
-
-    <Button
-        android:id="@+id/btn_create_account"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="CREATE ACCOUNT"
-        android:layout_marginTop="40dp"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
-</LinearLayout>
+            <Button
+                android:id="@+id/btn_create_account"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="CREATE ACCOUNT"
+                android:layout_marginTop="40dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@color/btn_bg_color" />
+    </LinearLayout>
+</ScrollView>
