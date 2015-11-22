@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnLogin;
+    private Button btnLogin, btnSignUp;
     private EditText txtLogin, txtPassword;
     private SharedPreferences sharedpreferences;
 
@@ -42,19 +42,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         btnLogin = (Button) findViewById(R.id.btn_login);
+        btnSignUp = (Button) findViewById(R.id.btn_sign_up);
         txtLogin = (EditText) findViewById(R.id.txt_login);
         txtPassword = (EditText) findViewById(R.id.txt_password);
 
         db = new DatabaseScript(this);
 
-        btnLogin.setOnClickListener(this);
+        sharedpreferences = getSharedPreferences(Parameter.MY_PREFERENCES, this.MODE_PRIVATE);
 
-        checkLoggedIn();
+        btnLogin.setOnClickListener(this);
+        btnSignUp.setOnClickListener(this);
+
+        //checkLoggedIn();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        /*
+        if(Parameter.user != null)
+            finish();
+            */
     }
 
     private void checkLoggedIn() {
-        sharedpreferences = getSharedPreferences(Parameter.MY_PREFERENCES, this.MODE_PRIVATE);
+        String user_id = sharedpreferences.getString("User", null);
+        if(user_id != null && !user_id.equals("")) {
+            DaoUser daoUser = new DaoUser(this);
+            daoUser.getUserById(user_id);
+            daoUser.close();
 
+            Intent it = new Intent(this, MainActivity.class);
+            startActivity(it);
+        }
     }
 
     /*
@@ -213,6 +234,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(it);
             } else
                 Toast.makeText(this, "Usuário não encontrado. Tente novamente.", Toast.LENGTH_SHORT).show();
+        } else if(v.getId() == R.id.btn_sign_up) {
+            Intent it = new Intent(this, SelfRegisteringActivity.class);
+            startActivity(it);
         }
     }
 
@@ -222,12 +246,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         DaoUser daoUser = null;
         try {
             daoUser = new DaoUser(this);
-            String user_id = sharedpreferences.getString("User", null);
-            if(user_id != null) {
-                daoUser.getUserById(user_id);
-                return true;
-            }
-
             User user = daoUser.getUser(txtLogin.getText().toString(), txtPassword.getText().toString());
             if (user != null) {
                 authorized = true;

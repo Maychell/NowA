@@ -5,9 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.Toast;
 
 import com.nowa.com.adapter.FeedAdapter;
 import com.nowa.com.cloudUtils.CloudQueries;
@@ -20,7 +22,6 @@ import com.nowa.com.utils.Parameter;
 import com.parse.ParseObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -31,6 +32,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     private List<Post> posts;
     private ImageView btnSend;
     private MultiAutoCompleteTextView txtMessage;
+    private Subject subjectPostingAt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +58,17 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void fillAutocomplete() {
-        String[] subjectsName = Parameter.getSubjectTagging();
-        if(subjectsName != null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.support.v7.appcompat.R.layout.select_dialog_item_material, subjectsName);
-            txtMessage.setAdapter(adapter);
-            txtMessage.setThreshold(1);
-            txtMessage.setTokenizer(new CustomTokenizer());
-        }
+        final ArrayAdapter<Subject> adapter = new ArrayAdapter<Subject>(this,
+                android.support.v7.appcompat.R.layout.select_dialog_item_material, Parameter.subjects);
+        txtMessage.setAdapter(adapter);
+        txtMessage.setThreshold(2);
+        txtMessage.setTokenizer(new CustomTokenizer());
+
+        txtMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int index, long id) {
+                subjectPostingAt = adapter.getItem(index);
+            }
+        });
     }
 
     private void loadSubjects() {
@@ -143,23 +148,31 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_send_message) {
+        if(v.getId() == R.id.btn_send_message)
+            newPost();
+    }
 
-            Post post = new Post("14/10/2015", "19:12", Parameter.user, txtMessage.getText().toString(), new Subject());
-
-            DaoPost daoPost = null;
-            try {
-                daoPost = new DaoPost(this);
-                daoPost.save(post);
-            } catch(Exception e) {
-                e.printStackTrace();
-            } finally {
-                if(daoPost != null)
-                    daoPost.close();
-            }
-
-            txtMessage.setText("");
-            loadFeed();
+    private void newPost() {
+        //Checking if the user choose at least one subject to post at
+        if(subjectPostingAt == null || subjectPostingAt.getId().equals("")) {
+            Toast.makeText(this, "Você deve vincular a postagem a uma turma.", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        Post post = new Post("14/10/2015", "19:12", Parameter.user, txtMessage.getText().toString(), subjectPostingAt);
+
+        DaoPost daoPost = null;
+        try {
+            daoPost = new DaoPost(this);
+            daoPost.save(post);
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(daoPost != null)
+                daoPost.close();
+        }
+
+        txtMessage.setText("");
+        loadFeed();
     }
 }

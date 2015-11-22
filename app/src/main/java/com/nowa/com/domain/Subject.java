@@ -70,6 +70,11 @@ public class Subject extends Entity {
         this.picture = picture;
     }
 
+    @Override
+    public String toString() {
+        return this.getName();
+    }
+
     public final static String NAME="name";
     public final static String NAME_SIGAA="name_sigaa";
     public final static String SUBJECT_CODE="subject_code";

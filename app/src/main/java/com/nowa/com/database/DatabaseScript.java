@@ -5,12 +5,14 @@ import android.content.Context;
 public class DatabaseScript extends Database {
 
     private static final String[] SCRIPT_DATABASE_DELETE = new String[] {
+			"DROP TABLE IF EXISTS hashtag_post",
+			"DROP TABLE IF EXISTS hashtag",
             "DROP TABLE IF EXISTS post",
             "DROP TABLE IF EXISTS subject",
             "DROP TABLE IF EXISTS user"
     };
 	private static final String[] SCRIPT_DATABASE_CREATE = new String[]{
-            "CREATE TABLE user (id VARCHAR(240) PRIMARY KEY, login VARCHAR(100) NOT NULL, token VARCHAR(240) NOT NULL, name VARCHAR(240) NOT NULL, course VARCHAR(240) NOT NULL, registerNumber VARCHAR(240) NOT NULL, email VARCHAR(240) NOT NULL);",
+            "CREATE TABLE user (id VARCHAR(240) PRIMARY KEY, login VARCHAR(100) NOT NULL, token VARCHAR(240) NOT NULL, name VARCHAR(240) NOT NULL, course VARCHAR(240) NOT NULL, register_number VARCHAR(240) NOT NULL, email VARCHAR(240) NOT NULL, description VARCHAR(240) NOT NULL);",
             //Subject
             "CREATE TABLE subject (id VARCHAR(240) PRIMARY KEY, subject_code VARCHAR(8) NOT NULL, name VARCHAR(240) NOT NULL, name_sigaa VARCHAR(240) NOT NULL, picture VARCHAR(240) NOT NULL);",
             //Post

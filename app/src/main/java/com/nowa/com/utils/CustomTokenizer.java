@@ -13,14 +13,16 @@ public class CustomTokenizer implements MultiAutoCompleteTextView.Tokenizer {
     @Override
     public int findTokenStart(CharSequence text, int cursor) {
         int position = cursor;
+        /*
+        while ((text.charAt(position-1) == '@' || text.charAt(position-1) == '#')) {
+            position++;
+        }
+        */
+
         while (position > 0 && text.charAt(position-1) != ' ') {
             position--;
         }
 
-        while (position < cursor &&
-                (text.charAt(position) == '@' || text.charAt(position) == '#')) {
-            position++;
-        }
         return position;
     }
 

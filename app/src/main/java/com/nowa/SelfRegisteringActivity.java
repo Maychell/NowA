@@ -1,6 +1,5 @@
-package com.nowa.com;
+package com.nowa;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.nowa.MainActivity;
 import com.nowa.R;
 import com.nowa.com.dao.DaoUser;
 import com.nowa.com.domain.User;
@@ -40,9 +38,9 @@ public class SelfRegisteringActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         if(v.getId() == R.id.btn_create_account) {
             if(doesntHaveErrors()) {
-                User user = new User(txtLogin.toString(), "jh6faklhfehlf4afhaefoaeo1",
-                        txtName.toString(), txtCourse.toString(), txtDescription.toString(),
-                        txtRegistrationNumber.toString(), txtEmail.toString());
+                User user = new User(txtLogin.getText().toString(), "jh6faklhfehlf4afhaefoaeo1",
+                        txtName.getText().toString(), txtCourse.getText().toString(), txtDescription.getText().toString(),
+                        txtRegistrationNumber.getText().toString(), txtEmail.getText().toString());
                 DaoUser userDao = new DaoUser(this);
                 userDao.save(user);
             } else
@@ -76,12 +74,21 @@ public class SelfRegisteringActivity extends AppCompatActivity implements View.O
     }
 
     private boolean doesntHaveErrors() {
-        if (txtName.equals("") || txtEmail.equals("") || txtLogin.equals("") ||
-                txtCourse.equals("") || txtRegistrationNumber.equals("") ||
-                txtDescription.equals("")) {
+        if (txtName.getText().equals("") || txtEmail.getText().equals("") || txtLogin.getText().equals("") ||
+                txtCourse.getText().equals("") || txtRegistrationNumber.getText().equals("") ||
+                txtDescription.getText().equals("")) {
             return false;
         }
 
         return true;
+    }
+
+    private void cleanData() {
+        txtName.setText("");
+        txtLogin.setText("");
+        txtCourse.setText("");
+        txtDescription.setText("");
+        txtRegistrationNumber.setText("");
+        txtEmail.setText("");
     }
 }

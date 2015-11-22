@@ -42,5 +42,13 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
 
+    <Button
+        android:id="@+id/btn_sign_up"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="CADASTRAR"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
 
 </LinearLayout>

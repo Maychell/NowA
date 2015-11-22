@@ -20,7 +20,7 @@ public class Application extends android.app.Application {
         super.onCreate();
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
 
-        Parameter.user = new User("9tsUNOMW4e", "@maychell", "fdlkfhsdjbfablkjrehjl123", "maychell", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
+        //Parameter.user = new User("9tsUNOMW4e", "@maychell", "fdlkfhsdjbfablkjrehjl123", "maychell", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
 
         /*
         HashMap<String, String> params = new HashMap<>();

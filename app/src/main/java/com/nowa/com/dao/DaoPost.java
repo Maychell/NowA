@@ -33,6 +33,7 @@ public class DaoPost extends GeneralDao {
         values.put(Post.TIME, post.getTime());
         values.put(Post.MESSAGE, post.getMessage());
         values.put(Post.USER, post.getUser().getId());
+        values.put(Post.SUBJECT, post.getSubject().getId());
 
         return values;
     }
@@ -46,6 +47,19 @@ public class DaoPost extends GeneralDao {
         for(ParseObject obj : result) {
             User u = new User();
             u.setId(obj.get(Post.USER).toString());
+            List<ParseObject> userResults = cloud.getObject("user", User._ID, u.getId());
+
+            if(userResults != null && !userResults.isEmpty()) {
+                ParseObject userParse = userResults.get(0);
+                u.setName(userParse.getString(User.NAME));
+                u.setLogin(userParse.getString(User.LOGIN));
+                u.setCourse(userParse.getString(User.COURSE));
+                u.setDescription(userParse.getString(User.DESCRIPTION));
+                u.setEmail(userParse.getString(User.EMAIL));
+                u.setRegisterNumber(userParse.getString(User.REGISTER_NUMBER));
+                u.setToken(userParse.getString(User.TOKEN));
+            }
+
             Subject subject = new Subject();
             subject.setId(obj.get(Post.SUBJECT).toString());
             Post post = new Post(obj.get(Post._ID).toString(), obj.get(Post.DATE).toString(), obj.get(Post.TIME).toString(),
