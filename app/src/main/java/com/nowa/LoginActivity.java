@@ -45,17 +45,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         txtSignUp.setOnClickListener(this);
 
-        //checkLoggedIn();
+        checkLoggedIn();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        /*
         if(Parameter.user != null)
             finish();
-            */
     }
 
     private void checkLoggedIn() {
@@ -65,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             daoUser.getUserById(user_id);
             daoUser.close();
 
-            Intent it = new Intent(this, MainActivity.class);
+            Intent it = new Intent(this, DrawerActivity.class);
             startActivity(it);
         }
     }

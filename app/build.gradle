@@ -35,4 +35,7 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 
+    compile('com.mikepenz:materialdrawer:4.5.1@aar') {
+        transitive = true
+    }
 }
