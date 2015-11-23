@@ -9,14 +9,22 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:background="@color/bg_color">
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:text="NowA"
-        android:textSize="30dp"
-        android:gravity="center"
-        android:layout_weight="4.5"
-        android:layout_marginLeft="10dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_nowa_60"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="35dp"
+        android:scaleType="fitXY"/>
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:text="NowA"-->
+        <!--android:textSize="30dp"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_weight="4.5"-->
+        <!--android:layout_marginLeft="10dp"/>-->
 
     <EditText
         android:id="@+id/txt_login"
@@ -50,7 +58,7 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:textStyle="bold"
@@ -62,6 +70,7 @@
         android:layout_height="wrap_content"
         android:onClick="onClick"
         android:text="Ainda não é cadastrado?"
+        android:layout_marginTop="6dp"
         android:textStyle="bold"
         android:clickable="true"
         android:gravity="center"
