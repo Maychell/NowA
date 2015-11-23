@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.nowa.com.dao.DaoUser;
 import com.nowa.com.domain.User;
 
+import java.util.UUID;
+
 public class SelfRegisteringActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btnCreateAccount;
@@ -39,7 +41,7 @@ public class SelfRegisteringActivity extends AppCompatActivity implements View.O
             DaoUser userDao = null;
             try {
                 doesntHaveErrors();
-                User user = new User(txtLogin.getText().toString(), "jh6faklhfehlf4afhaefoaeo1",
+                User user = new User(txtLogin.getText().toString(), String.valueOf(UUID.randomUUID()),
                         txtName.getText().toString(), txtCourse.getText().toString(), txtDescription.getText().toString(),
                         txtRegistrationNumber.getText().toString(), txtEmail.getText().toString());
                 userDao = new DaoUser(this);

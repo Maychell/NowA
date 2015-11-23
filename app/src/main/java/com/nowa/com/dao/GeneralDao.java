@@ -34,10 +34,13 @@ public abstract class GeneralDao extends Database implements CloudQueries.ILocal
         switch (methodName) {
             case "save":
                 result=insert(className, params, cloudPersist);
+                break;
             case "update":
                 result=update(className, params, cloudPersist);
+                break;
             case "delete":
                 result=delete(className, params, cloudPersist);
+                break;
         }
         return result;
     }

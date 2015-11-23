@@ -1,5 +1,6 @@
 package com.nowa.com.cloudUtils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,14 +71,14 @@ public class CloudQueries implements ICloudQueries {
 	public void updateInBackground(String className, final HashMap<String, String> keyParameters, String id){
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(className);
 		query.getInBackground(id, new GetCallback<ParseObject>() {
-		  public void done(ParseObject object, ParseException e) {
-		    if (e == null) {
-		    	Set<String> keys = keyParameters.keySet();
-		    	for(String key : keys)
-					object.put(key, keyParameters.get(key));
-		    	object.saveInBackground();
-		    }
-		  }
+			public void done(ParseObject object, ParseException e) {
+				if (e == null) {
+					Set<String> keys = keyParameters.keySet();
+					for (String key : keys)
+						object.put(key, keyParameters.get(key));
+					object.saveInBackground();
+				}
+			}
 		});
 	}
 
@@ -102,6 +103,17 @@ public class CloudQueries implements ICloudQueries {
 	public List<ParseObject> getObject(String className, String key, String value){
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(className);
 		query.whereEqualTo(key, value);
+		try {
+			object = query.find();
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		return object;
+	}
+
+	public List<ParseObject> getObject(String className, String key, String[] value){
+		ParseQuery<ParseObject> query = ParseQuery.getQuery(className);
+        query.whereContainedIn(key, Arrays.asList(value));
 		try {
 			object = query.find();
 		} catch (ParseException e1) {

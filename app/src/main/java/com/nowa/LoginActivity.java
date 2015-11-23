@@ -45,17 +45,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         txtSignUp.setOnClickListener(this);
 
-        //checkLoggedIn();
+        checkLoggedIn();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        /*
         if(Parameter.user != null)
             finish();
-            */
     }
 
     private void checkLoggedIn() {
@@ -65,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             daoUser.getUserById(user_id);
             daoUser.close();
 
-            Intent it = new Intent(this, MainActivity.class);
+            Intent it = new Intent(this, FeedActivity.class);
             startActivity(it);
         }
     }
@@ -222,7 +220,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if(v.getId() == R.id.btn_login) {
             if(authorized()) {
-                Intent it = new Intent(this, MainActivity.class);
+                Intent it = new Intent(this, FeedActivity.class);
                 startActivity(it);
             } else
                 Toast.makeText(this, "Usuário não encontrado. Tente novamente.", Toast.LENGTH_SHORT).show();
@@ -235,6 +233,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean authorized() {
         boolean authorized = false;
+
+        if(txtLogin.getText().toString().equals(""))
+            return authorized;
 
         DaoUser daoUser = null;
         try {
@@ -254,6 +255,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         return authorized;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
     @Override

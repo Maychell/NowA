@@ -21,11 +21,14 @@ import com.nowa.com.utils.CustomTokenizer;
 import com.nowa.com.utils.Parameter;
 import com.parse.ParseObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class FeedActivity extends AppCompatActivity implements View.OnClickListener {
+public class FeedActivity extends DrawerActivity implements View.OnClickListener {
 
     private RecyclerView mRecyclerView;
     private FeedAdapter mAdapter;
@@ -47,14 +50,12 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         loadSubjects();
         fillAutocomplete();
         loadFeed();
+
+        loadDrawer(savedInstanceState);
     }
 
     private void fillAutocomplete() {
@@ -85,19 +86,28 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                 CloudQueries cloudQueries = new CloudQueries(this);
 
                 //Out of 15 getting 4 random subjects
-                List<Integer> numbers = new ArrayList<>();
+                String[] numbers = new String[4];
                 for (int i = 0; i < 4; ++i) {
                     int randomNum = 0;
+                    boolean has = false;
                     do {
+                        has = false;
                         Random rand = new Random();
                         randomNum = rand.nextInt(15) + 1;
-                    } while (numbers.contains(randomNum));
-                    numbers.add(randomNum);
 
-                    List<ParseObject> results = cloudQueries.getObject("subject", "number", "" + randomNum);
+                        for(int j=i-1; j>=0; --j) {
+                            if(numbers[j].equals(""+randomNum))
+                                has = true;
+                        }
 
-                    if (results.size() > 0) {
-                        ParseObject po = results.get(0);
+                    } while (has);
+                    numbers[i] = ""+randomNum;
+                }
+
+                List<ParseObject> results = cloudQueries.getObject("subject", "number", numbers);
+
+                if (results != null && !results.isEmpty()) {
+                    for(ParseObject po : results) {
                         Subject subject = new Subject(po.getObjectId(), po.getString(Subject.NAME), po.getString(Subject.NAME_SIGAA), po.getString(Subject.SUBJECT_CODE), po.getString(Subject.PICTURE));
                         Parameter.subjects.add(subject);
                     }
@@ -127,21 +137,6 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                 daoPost.close();
         }
 
-        /*
-        User user1 = new User("@maychell", "fdlkfhsdjbfablkjrehjl123", "Maychell Fernandes", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
-        User user2 = new User("@rafaelfq", "fdlkfhsdjbfablkjrehjl123", "Rafael Fernandes", "Engenharia de Software", "null", "20104324", "rafael_v1d4_l0k4@hotmail.com");
-        User user3 = new User("@itamirxd", "fdlkfhsdjbfablkjrehjl123", "Itamir Francisco", "Ciência da Computação", "null", "120334345", "itamir_ufrn@hotmail.com");
-
-        posts.add(new Post("10/12/2014", "19:12", user1, "@Algebra20152 Prova MUUUUUITO DOIDA!!!!"));
-        posts.add(new Post("10/12/2014", "19:12", user2, "@PIU20152 Atividade pra amanhã, galera :x"));
-        posts.add(new Post("10/12/2014", "19:12", user3, "@DEVAndroid #Notas lancadas :p"));
-        /*
-        posts.add(new Post("10/12/2014", "19:12", user, "@Algebra20152 Prova MUUUUUITO DOIDA!!!![2]"));
-        posts.add(new Post("10/12/2014", "19:12", user, "@Algebra20152 Nao aguento mais provas!!"));
-        posts.add(new Post("10/12/2014", "19:12", user, "@Algebra20152 Saiu a #nota da prova :x"));
-        posts.add(new Post("10/12/2014", "19:12", user, "@Topicos320152 Foca no trabalho, negada."));
-        */
-
         mAdapter = new FeedAdapter(this, posts);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -159,7 +154,10 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        Post post = new Post("14/10/2015", "19:12", Parameter.user, txtMessage.getText().toString(), subjectPostingAt);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+        Post post = new Post(dateFormat.format(date).split(" ")[0], dateFormat.format(date).split(" ")[1], Parameter.user, txtMessage.getText().toString(), subjectPostingAt);
 
         DaoPost daoPost = null;
         try {
@@ -174,5 +172,10 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
 
         txtMessage.setText("");
         loadFeed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
