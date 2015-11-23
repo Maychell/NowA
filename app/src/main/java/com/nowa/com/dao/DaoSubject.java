@@ -46,7 +46,7 @@ public class DaoSubject extends GeneralDao {
 
             if(c.moveToFirst()) {
                 do {
-                    selection += "'"+c.getString(c.getColumnIndex(UserSubject.SUBJECT)) + "', ";
+                    selection += "'"+c.getString(c.getColumnIndex(UserSubject.SUBJECT)) + "'" + (c.isLast() ? "" : ", ");
                 } while (c.moveToNext());
             } else {
                 //TRY TO RETRIEVE FROM CLOUD.

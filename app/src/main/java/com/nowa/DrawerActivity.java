@@ -114,6 +114,8 @@ public class DrawerActivity extends AppCompatActivity {
         editor.putString("User", null);
         editor.commit();
 
+        Parameter.subjects = null;
+
         Intent i = new Intent(DrawerActivity.this, LoginActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
