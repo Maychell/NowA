@@ -2,15 +2,12 @@ package com.nowa;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -21,16 +18,10 @@ import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.SwitchDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
-import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.nowa.com.domain.Subject;
 import com.nowa.com.utils.Parameter;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.parse.ParsePush;
 
 public class DrawerActivity extends AppCompatActivity {
 
@@ -126,5 +117,16 @@ public class DrawerActivity extends AppCompatActivity {
         Intent i = new Intent(DrawerActivity.this, FeedActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
+    }
+
+    public void notifyUser() {
+        try {
+            ParsePush push = new ParsePush();
+            push.setMessage("New Post");
+            push.sendInBackground();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
