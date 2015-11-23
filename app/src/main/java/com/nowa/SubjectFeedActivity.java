@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Created by maychellfernandesdeoliveira on 07/10/2015.
  */
-public class SubjectFeedActivity extends AppCompatActivity {
+public class SubjectFeedActivity extends DrawerActivity {
 
     private RecyclerView mRecyclerView;
     private FeedAdapter mAdapter;
@@ -47,12 +47,10 @@ public class SubjectFeedActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         loadFeed();
+
+        loadDrawer(savedInstanceState);
     }
 
     private void loadFeed() {

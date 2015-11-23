@@ -25,10 +25,9 @@
         <activity
             android:name=".DrawerActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".MainActivity" />
         <activity android:name=".FeedActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FollowingActivity" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SubjectFeedActivity" />
+        <activity android:name=".SubjectFeedActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SelfRegisteringActivity" android:theme="@style/AppTheme.NoActionBar">
         </activity>

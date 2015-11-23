@@ -1,12 +1,16 @@
 package com.nowa;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -19,7 +23,11 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SwitchDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.nowa.com.domain.Subject;
 import com.nowa.com.utils.Parameter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,20 +37,7 @@ public class DrawerActivity extends AppCompatActivity {
     private Drawer drawer;
     private AccountHeader accountHeader;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawer);
-
-        loadDrawer(savedInstanceState);
-
-        /*
-        Intent it = new Intent(this, MainActivity.class);
-        startActivity(it);
-        */
-    }
-
-    private void loadDrawer(Bundle savedInstanceState) {
+    protected void loadDrawer(Bundle savedInstanceState) {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,24 +69,34 @@ public class DrawerActivity extends AppCompatActivity {
                         return false;
                     }
                 })
-                .withOnDrawerItemLongClickListener(new Drawer.OnDrawerItemLongClickListener() {
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
-                    public boolean onItemLongClick(View view, int position, IDrawerItem drawerItem) {
-                        Toast.makeText(DrawerActivity.this, "onItemLongClick: " + position, Toast.LENGTH_SHORT).show();
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        //IDrawerItem x = drawer.getDrawerItem(position);
+                        if (position == drawer.getDrawerItems().size())
+                            logout();
+                        else {
+                            try {
+                                Subject subject = (Subject) drawerItem.getTag();
+                                SubjectFeedActivity.subject = subject;
+                                Intent i = new Intent(DrawerActivity.this, SubjectFeedActivity.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                         return false;
                     }
                 })
                 .build();
-        /*
+
         for (Subject sub : Parameter.subjects ) {
-            drawer.addItem(new PrimaryDrawerItem().withName(sub.getName()).withIcon(R.drawable.ic_material));
+            drawer.addItem(new PrimaryDrawerItem().withTag(sub).withName(sub.getName()).withIcon(R.drawable.ic_material));
         }
-        */
-        for(int i=0; i<3; ++i) {
-            drawer.addItem(new PrimaryDrawerItem().withName("Testando.").withIcon(R.drawable.ic_material));
-        }
+
         drawer.addItem(new DividerDrawerItem());
-        drawer.addItem(new SwitchDrawerItem().withName("Notificação").withChecked(true).withOnCheckedChangeListener(onCheckedChangeListener));
+        drawer.addItem(new PrimaryDrawerItem().withName("Logout"));
     }
 
     private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener() {
@@ -101,4 +106,23 @@ public class DrawerActivity extends AppCompatActivity {
         }
     };
 
+    private void logout() {
+        SharedPreferences sharedpreferences = getSharedPreferences(Parameter.MY_PREFERENCES, this.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        Parameter.user = null;
+        editor.putString("User", null);
+        editor.commit();
+
+        Intent i = new Intent(DrawerActivity.this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(DrawerActivity.this, FeedActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
 }
