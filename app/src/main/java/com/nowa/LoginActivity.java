@@ -234,6 +234,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean authorized() {
         boolean authorized = false;
 
+        if(txtLogin.getText().toString().equals(""))
+            return authorized;
+
         DaoUser daoUser = null;
         try {
             daoUser = new DaoUser(this);

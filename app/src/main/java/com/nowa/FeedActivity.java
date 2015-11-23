@@ -86,19 +86,28 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
                 CloudQueries cloudQueries = new CloudQueries(this);
 
                 //Out of 15 getting 4 random subjects
-                List<Integer> numbers = new ArrayList<>();
+                String[] numbers = new String[4];
                 for (int i = 0; i < 4; ++i) {
                     int randomNum = 0;
+                    boolean has = false;
                     do {
+                        has = false;
                         Random rand = new Random();
                         randomNum = rand.nextInt(15) + 1;
-                    } while (numbers.contains(randomNum));
-                    numbers.add(randomNum);
 
-                    List<ParseObject> results = cloudQueries.getObject("subject", "number", "" + randomNum);
+                        for(int j=i-1; j>=0; --j) {
+                            if(numbers[j].equals(""+randomNum))
+                                has = true;
+                        }
 
-                    if (results.size() > 0) {
-                        ParseObject po = results.get(0);
+                    } while (has);
+                    numbers[i] = ""+randomNum;
+                }
+
+                List<ParseObject> results = cloudQueries.getObject("subject", "number", numbers);
+
+                if (results != null && !results.isEmpty()) {
+                    for(ParseObject po : results) {
                         Subject subject = new Subject(po.getObjectId(), po.getString(Subject.NAME), po.getString(Subject.NAME_SIGAA), po.getString(Subject.SUBJECT_CODE), po.getString(Subject.PICTURE));
                         Parameter.subjects.add(subject);
                     }
