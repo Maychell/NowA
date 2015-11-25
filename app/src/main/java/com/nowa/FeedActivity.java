@@ -1,9 +1,11 @@
 package com.nowa;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,9 +20,11 @@ import com.nowa.com.dao.DaoSubject;
 import com.nowa.com.domain.Post;
 import com.nowa.com.domain.Subject;
 import com.nowa.com.utils.CustomTokenizer;
+import com.nowa.com.utils.FileDialog;
 import com.nowa.com.utils.Parameter;
 import com.parse.ParseObject;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,8 +38,11 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
     private FeedAdapter mAdapter;
     private List<Post> posts;
     private ImageView btnSend;
+    private ImageView btnAttachment;
     private MultiAutoCompleteTextView txtMessage;
     private Subject subjectPostingAt;
+
+    private FileDialog fileDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +51,11 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
 
         posts = new ArrayList<>();
         btnSend = (ImageView) findViewById(R.id.btn_send_message);
+        btnAttachment = (ImageView) findViewById(R.id.btn_attachment);
         txtMessage = (MultiAutoCompleteTextView) findViewById(R.id.mult_txt_message);
+
         btnSend.setOnClickListener(this);
+        btnAttachment.setOnClickListener(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -143,8 +153,19 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_send_message)
+        if(v.getId() == R.id.btn_send_message) {
             newPost();
+        } else if (v.getId() == R.id.btn_attachment) {
+            File mPath = new File(Environment.getExternalStorageDirectory() + "//DIR//");
+            fileDialog = new FileDialog(this, mPath);
+            fileDialog.setFileEndsWith(".txt");
+            fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
+                public void fileSelected(File file) {
+                    Log.d(getClass().getName(), "selected file " + file.toString());
+                }
+            });
+            fileDialog.showDialog();
+        }
     }
 
     private void newPost() {
