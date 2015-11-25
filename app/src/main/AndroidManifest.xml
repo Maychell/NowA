@@ -41,8 +41,9 @@
         </activity>
 
         <service android:name="com.parse.PushService" />
-        <receiver android:name="com.nowa.com.utils.GetPostsBroadcastReceiver"
+        <receiver android:name="com.parse.ParsePushBroadcastReceiver"
             android:exported="false">
+            <!-- com.nowa.com.utils.GetPostsBroadcastReceiver -->
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />

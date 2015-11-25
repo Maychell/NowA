@@ -3,6 +3,7 @@ package com.nowa.com.utils;
 import android.content.Context;
 import android.content.Intent;
 
+import com.nowa.FeedActivity;
 import com.nowa.com.cloudUtils.CloudQueries;
 import com.nowa.com.dao.GeneralDao;
 import com.parse.ParseObject;
@@ -16,12 +17,22 @@ import java.util.Map;
  */
 public class GetPostsBroadcastReceiver extends ParsePushBroadcastReceiver {
 
+    public static Intent intent;
+
+    public interface IUpdateFeed {
+        public void update();
+    }
+
     @Override
     protected void onPushReceive(Context context, Intent intent) {
         updateLocalDatabase(context);
     }
 
     private void updateLocalDatabase(Context ctx) {
+
+        IUpdateFeed iUpdateFeed = new FeedActivity();
+        iUpdateFeed.update();
+        /*
         CloudQueries cloud = new CloudQueries(ctx);
 
         GeneralDao generalDao = new GeneralDao(ctx) {
@@ -32,5 +43,6 @@ public class GetPostsBroadcastReceiver extends ParsePushBroadcastReceiver {
         };
 
         //TERMINAR ISSO AQUI: PEGAR NOVOS POSTS E SALVAR NO BANCO DE DADOS LOCAL
+        */
     }
 }

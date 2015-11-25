@@ -1,6 +1,7 @@
 package com.nowa.com.dao;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.nowa.com.cloudUtils.CloudQueries;
 import com.nowa.com.domain.User;
@@ -55,6 +56,31 @@ public class DaoUser extends GeneralDao {
     }
 
     public void getUserById(String idUser) {
+
+        try {
+            //Try to retrieve to get user from local database
+            Cursor c = getAllCursors("user", User.COLUMNS, User._ID+"='"+idUser+"'");
+
+            if(c.moveToFirst()) {
+
+                int idxid = c.getColumnIndex(User._ID);
+                int idxlogin = c.getColumnIndex(User.LOGIN);
+                int idxtoken = c.getColumnIndex(User.TOKEN);
+                int idxname = c.getColumnIndex(User.NAME);
+                int idxcourse = c.getColumnIndex(User.COURSE);
+                int idxdescription = c.getColumnIndex(User.DESCRIPTION);
+                int idxregisterNumber = c.getColumnIndex(User.REGISTER_NUMBER);
+                int idxemail = c.getColumnIndex(User.EMAIL);
+
+                Parameter.user = new User(c.getString(idxid), c.getString(idxlogin), c.getString(idxtoken),
+                        c.getString(idxname), c.getString(idxcourse), c.getString(idxdescription),
+                        c.getString(idxregisterNumber), c.getString(idxemail));
+                return;
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
         CloudQueries cloudQueries = new CloudQueries(ctx);
 
         List<ParseObject> results = cloudQueries.getObject("user", "objectId", idUser);
@@ -62,10 +88,12 @@ public class DaoUser extends GeneralDao {
         Parameter.user = new User(po.getObjectId(), po.getString(User.LOGIN), po.getString(User.TOKEN),
                 po.getString(User.NAME), po.getString(User.COURSE), po.getString(User.DESCRIPTION),
                 po.getString(User.REGISTER_NUMBER), po.getString(User.EMAIL));
+
+        save(Parameter.user, false);
     }
 
-    public void save(User user) {
-        service("save", "user", parseObjectToMap(user), true);
+    public void save(User user, boolean... cloud) {
+        service("save", "user", parseObjectToMap(user), (cloud != null ? cloud[0] : true));
     }
 
 }

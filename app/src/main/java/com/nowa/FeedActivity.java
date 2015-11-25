@@ -1,5 +1,6 @@
 package com.nowa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.nowa.com.dao.DaoSubject;
 import com.nowa.com.domain.Post;
 import com.nowa.com.domain.Subject;
 import com.nowa.com.utils.CustomTokenizer;
+import com.nowa.com.utils.GetPostsBroadcastReceiver;
 import com.nowa.com.utils.Parameter;
 import com.parse.ParseObject;
 
@@ -28,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class FeedActivity extends DrawerActivity implements View.OnClickListener {
+public class FeedActivity extends DrawerActivity implements View.OnClickListener, GetPostsBroadcastReceiver.IUpdateFeed {
 
     private RecyclerView mRecyclerView;
     private FeedAdapter mAdapter;
@@ -41,6 +43,8 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+
+        GetPostsBroadcastReceiver.intent = getIntent();
 
         posts = new ArrayList<>();
         btnSend = (ImageView) findViewById(R.id.btn_send_message);
@@ -177,5 +181,20 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    public void update() {
+        try {
+            loadFeed();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        GetPostsBroadcastReceiver.intent = null;
     }
 }
