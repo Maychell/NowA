@@ -13,6 +13,8 @@
         android:name="com.nowa.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.nowa.permission.C2D_MESSAGE" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".Application"
         android:allowBackup="true"
