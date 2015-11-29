@@ -4,6 +4,7 @@ import com.nowa.com.dao.GeneralDao;
 import com.nowa.com.domain.User;
 import com.nowa.com.utils.Parameter;
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 
 import java.util.HashMap;
 
@@ -19,6 +20,8 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
+
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         //Parameter.user = new User("9tsUNOMW4e", "@maychell", "fdlkfhsdjbfablkjrehjl123", "maychell", "Engenharia de Software", "null", "20125412", "maychellfernandes@hotmail.com");
 

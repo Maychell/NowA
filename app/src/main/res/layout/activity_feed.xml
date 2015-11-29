@@ -30,10 +30,28 @@
         android:id="@+id/recycler_view"
         class="android.support.v7.widget.RecyclerView"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/coordinator"
+        android:layout_above="@+id/maintain_file"
+        android:layout_marginTop="3dp" />
+
+    <LinearLayout
+        android:id="@+id/maintain_file"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
         android:layout_above="@+id/add_comment"
-        android:layout_marginTop="3dp"/>
+        android:visibility="gone" >
+
+        <view
+            android:id="@+id/recycler_file_view"
+            class="android.support.v7.widget.RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/add_comment"

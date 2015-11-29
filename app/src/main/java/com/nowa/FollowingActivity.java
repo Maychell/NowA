@@ -11,6 +11,7 @@ import com.nowa.com.adapter.FeedAdapter;
 import com.nowa.com.adapter.SubjectAdapter;
 import com.nowa.com.domain.Post;
 import com.nowa.com.domain.Subject;
+import com.nowa.com.utils.GetPostsBroadcastReceiver;
 import com.nowa.com.utils.Parameter;
 
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class FollowingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_following);
+
+        GetPostsBroadcastReceiver.intent = getIntent();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -53,5 +56,11 @@ public class FollowingActivity extends AppCompatActivity {
 
         mAdapter = new SubjectAdapter(this, Parameter.subjects);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        GetPostsBroadcastReceiver.intent = null;
     }
 }

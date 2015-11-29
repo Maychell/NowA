@@ -88,6 +88,8 @@ public class DrawerActivity extends AppCompatActivity {
 
         drawer.addItem(new DividerDrawerItem());
         drawer.addItem(new PrimaryDrawerItem().withName("Logout"));
+
+        drawer.keyboardSupportEnabled(this, true);
     }
 
     private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener() {

@@ -18,6 +18,7 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.nowa.com.dao.DaoUser;
 import com.nowa.com.database.Database;
 import com.nowa.com.database.DatabaseScript;
+import com.nowa.com.domain.Hashtag;
 import com.nowa.com.domain.User;
 import com.nowa.com.utils.OAuthTokenManager;
 import com.nowa.com.utils.Parameter;
@@ -91,11 +92,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /*
     private void populateCloudDatabase() {
-        List<HashMap<String, String>> subjects = new ArrayList<>();
+        List<HashMap<String, String>> hashtags = new ArrayList<>();
         CloudQueries cloudQueries = new CloudQueries(this);
 
-        HashMap<String, String> subject = new HashMap<>();
+        HashMap<String, String> hashtag = new HashMap<>();
 
+        hashtag.put(Hashtag.NAME, "#prova");
+        hashtags.add(hashtag);
+
+        hashtag = new HashMap<>();
+        hashtag.put(Hashtag.NAME, "#atividade");
+        hashtags.add(hashtag);
+
+        hashtag = new HashMap<>();
+        hashtag.put(Hashtag.NAME, "#material");
+        hashtags.add(hashtag);
+
+        hashtag = new HashMap<>();
+        hashtag.put(Hashtag.NAME, "#exercicios");
+        hashtags.add(hashtag);
+
+        hashtag = new HashMap<>();
+        hashtag.put(Hashtag.NAME, "#notas");
+        hashtags.add(hashtag);
+
+        for(HashMap<String, String> sub : hashtags)
+            cloudQueries.save("hashtag", sub);
+
+        Toast.makeText(this, "Hashtags saved successfully:D", Toast.LENGTH_SHORT).show();
+    }
+
+    /*
         //1
         subject.put("number", "1");
         subject.put("picture", "http://0.gravatar.com/userimage/65397875/0d22d6ef7eb81a3db86f9581033ac671");
