@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String CLIENTID = "nowa-id";
     private static final String CLIENTSECRET = "applicationnowa";
     private String jsonResponse;
+    private Context loginActivity;
 
     private Database db;
 
@@ -65,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txtSignUp.setOnClickListener(this);
 
         checkLoggedIn();
+        loginActivity = this;
     }
 
     @Override
@@ -279,6 +281,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             String nome = jsonObject.getString("nome");
                             String login = jsonObject.getString("login");
+
+                            DaoUser daoUser = new DaoUser(loginActivity);
+                            User user = daoUser.getUserByLogin(login);
+
+                            if (user == null) {
+                                user = new User(login, "ofhaluasehffa;seifj", nome, "Engenharia de Software",
+                                        "Aluno iniciante", "2011090433", "aluno.teste@gmail.com");
+                                daoUser.save(user);
+                            }
+
+                            Parameter.user = user;
+
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+                            editor.putString("User", Parameter.user.getId());
+                            editor.commit();
 
                             jsonResponse = "";
                             jsonResponse += "Name: " + nome + "\n\n";

@@ -48,7 +48,7 @@ public class OAuthTokenManager {
         return oAuthTokenManager;
     }
 
-    public void getTokenCredential(Activity activity,String oAuthServerURL, String clientId,
+    public void getTokenCredential(Activity activity, String oAuthServerURL, String clientId,
                                    String clientSecret, OAuthManager.OAuthCallback<Credential> callback){
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -57,10 +57,10 @@ public class OAuthTokenManager {
                 BearerToken.authorizationHeaderAccessMethod(),
                 AndroidHttp.newCompatibleTransport(),
                 new JacksonFactory(),
-                new GenericUrl(oAuthServerURL + "/oauth/token"),
+                new GenericUrl(oAuthServerURL +"/oauth/token"),
                 new ClientParametersAuthentication(clientId, clientSecret),
                 clientId,
-                oAuthServerURL + "/oauth/authorize");
+                oAuthServerURL +"/oauth/authorize");
         //builder.setCredentialStore(credentialStore);
 
         AuthorizationFlow flow = builder.build();
@@ -78,12 +78,11 @@ public class OAuthTokenManager {
             }
         };
 
-        OAuthManager oAuthManager = new OAuthManager(flow, controller);
+        OAuthManager oauth = new OAuthManager(flow, controller);
 
         try {
-            oAuthManager.authorizeExplicitly("userId", callback, null);
-
-            if (credential != null) {
+            oauth.authorizeExplicitly("userId", callback, null);
+            if(credential != null){
                 Log.d("TOKEN", credential.getAccessToken());
             }
         } catch (Exception e) {
