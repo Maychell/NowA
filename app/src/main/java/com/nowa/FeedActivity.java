@@ -16,7 +16,9 @@ import com.nowa.com.adapter.FileAdapter;
 import com.nowa.com.cloudUtils.CloudQueries;
 import com.nowa.com.dao.DaoPost;
 import com.nowa.com.dao.DaoSubject;
+import com.nowa.com.domain.Hashtag;
 import com.nowa.com.domain.Post;
+import com.nowa.com.domain.SpecialWord;
 import com.nowa.com.domain.Subject;
 import com.nowa.com.utils.CustomTokenizer;
 import com.nowa.com.utils.GetPostsBroadcastReceiver;
@@ -74,15 +76,27 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
     }
 
     private void fillAutocomplete() {
-        final ArrayAdapter<Subject> adapter = new ArrayAdapter<Subject>(this,
-                android.support.v7.appcompat.R.layout.select_dialog_item_material, Parameter.subjects);
+        List<SpecialWord> specialWords = new ArrayList<SpecialWord>();
+        specialWords.add(new Hashtag("1", "#atividade", "atividade"));
+        specialWords.add(new Hashtag("2", "#arquivo", "arquivo"));
+        specialWords.add(new Hashtag("3", "#prova", "prova"));
+
+
+        specialWords.addAll(Parameter.subjects);
+        specialWords.addAll(specialWords);
+
+        final ArrayAdapter<SpecialWord> adapter = new ArrayAdapter<SpecialWord>(this,
+                android.support.v7.appcompat.R.layout.select_dialog_item_material, specialWords);
         txtMessage.setAdapter(adapter);
         txtMessage.setThreshold(2);
         txtMessage.setTokenizer(new CustomTokenizer());
 
         txtMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int index, long id) {
-                subjectPostingAt = adapter.getItem(index);
+                SpecialWord word = adapter.getItem(index);
+                if (word instanceof Subject) {
+                    subjectPostingAt = (Subject) word;
+                }
             }
         });
     }

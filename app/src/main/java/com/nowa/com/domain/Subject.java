@@ -3,7 +3,7 @@ package com.nowa.com.domain;
 /**
  * Created by maychellfernandesdeoliveira on 05/10/2015.
  */
-public class Subject extends Entity {
+public class Subject extends Entity implements SpecialWord {
 
     public final static String[] COLUMNS = new String[] {
             Subject._ID, Subject.SUBJECT_CODE, Subject.NAME, Subject.NAME_SIGAA, Subject.PICTURE
@@ -79,4 +79,9 @@ public class Subject extends Entity {
     public final static String NAME_SIGAA="name_sigaa";
     public final static String SUBJECT_CODE="subject_code";
     public final static String PICTURE="picture";
+
+    public String getRealName() {
+
+        return this.getNameSigaa();
+    }
 }
