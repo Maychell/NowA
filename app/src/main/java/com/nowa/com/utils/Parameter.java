@@ -10,6 +10,12 @@ import java.util.List;
  */
 public class Parameter {
 
+    public static final int ACTION_LOGIN = 1;
+    public static final int ACTION_CHECK_LOGGED_IN = 2;
+    public static final int ACTION_START_FEED = 3;
+    public static final int ACTION_SAVE = 4;
+    public static final int ACTION_LOAD_FEED = 5;
+
     public static User user;
 
     public static List<Subject> subjects;

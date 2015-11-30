@@ -1,5 +1,7 @@
 package com.nowa;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,13 +44,16 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
     private ImageView btnAttachment;
     private MultiAutoCompleteTextView txtMessage;
     private Subject subjectPostingAt;
-    private List<com.nowa.com.domain.File> filesToUpload;
+    public static List<com.nowa.com.domain.File> filesToUpload;
     private boolean hideAttachment;
+    private Bundle savedInstanceState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+
+        this.savedInstanceState = savedInstanceState;
 
         GetPostsBroadcastReceiver.intent = getIntent();
 
@@ -68,11 +73,13 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
 
         hideAttachment = true;
 
+        new ProgressTask(Parameter.ACTION_START_FEED).execute();
+
+        /*
         loadSubjects();
         fillAutocomplete();
         loadFeed();
-
-        loadDrawer(savedInstanceState);
+        */
     }
 
     private void fillAutocomplete() {
@@ -165,7 +172,9 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
             if(daoPost != null)
                 daoPost.close();
         }
+    }
 
+    private void showAdapter() {
         mAdapter = new FeedAdapter(this, posts);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -219,7 +228,11 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
 
-        Post post = new Post(dateFormat.format(date).split(" ")[0], dateFormat.format(date).split(" ")[1], Parameter.user, txtMessage.getText().toString(), subjectPostingAt);
+        if(filesToUpload != null && !filesToUpload.isEmpty())
+            filesToUpload.remove(0);
+
+        Post post = new Post(dateFormat.format(date).split(" ")[0], dateFormat.format(date).split(" ")[1],
+                Parameter.user, txtMessage.getText().toString(), subjectPostingAt);
 
         DaoPost daoPost = null;
         try {
@@ -236,7 +249,8 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
         filesToUpload = new ArrayList<>();
         hideAttachment = false;
         loadFile();
-        loadFeed();
+        //loadFeed();
+        new ProgressTask(Parameter.ACTION_LOAD_FEED).execute();
     }
 
     @Override
@@ -247,7 +261,8 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
     @Override
     public void update() {
         try {
-            loadFeed();
+            //loadFeed();
+            new ProgressTask(Parameter.ACTION_LOAD_FEED).execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -257,5 +272,51 @@ public class FeedActivity extends DrawerActivity implements View.OnClickListener
     protected void onDestroy() {
         super.onDestroy();
         GetPostsBroadcastReceiver.intent = null;
+    }
+
+    public class ProgressTask extends AsyncTask<String, Void, Boolean> {
+
+        private int action;
+
+        public ProgressTask(int action) {
+            this.action = action;
+            dialog = new ProgressDialog(FeedActivity.this);
+        }
+
+        private ProgressDialog dialog;
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            if(action == Parameter.ACTION_START_FEED) {
+                loadSubjects();
+                //fillAutocomplete();
+                loadFeed();
+            } else if(action == Parameter.ACTION_LOAD_FEED)
+                loadFeed();
+            else if(action == Parameter.ACTION_SAVE)
+                newPost();
+            //loginFromUFRN();
+            return true;
+        }
+
+        protected void onPreExecute() {
+            this.dialog.setMessage("Please wait...");
+            this.dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            if(action == Parameter.ACTION_START_FEED) {
+                fillAutocomplete();
+                showAdapter();
+                loadDrawer(savedInstanceState);
+            }
+            if(action == Parameter.ACTION_LOAD_FEED) {
+                showAdapter();
+            }
+        }
     }
 }

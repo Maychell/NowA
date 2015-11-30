@@ -3,12 +3,16 @@ package com.nowa.com.dao;
 import android.content.Context;
 
 import com.nowa.com.cloudUtils.CloudQueries;
+import com.nowa.com.domain.File;
 import com.nowa.com.domain.Post;
 import com.nowa.com.domain.Subject;
 import com.nowa.com.domain.User;
 import com.nowa.com.utils.Parameter;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +32,7 @@ public class DaoPost extends GeneralDao {
         Post post = (Post) obj;
 
         HashMap<String, String> values = new HashMap<>();
-        values.put(Post._ID, post.getId());
+        values.put(Post._ID, post.getId() == null ? "" : post.getId());
         values.put(Post.DATE, post.getDate());
         values.put(Post.TIME, post.getTime());
         values.put(Post.MESSAGE, post.getMessage());
@@ -69,8 +73,8 @@ public class DaoPost extends GeneralDao {
 
             Subject subject = new Subject();
             subject.setId(obj.get(Post.SUBJECT).toString());
-            Post post = new Post(obj.get(Post._ID).toString(), obj.get(Post.DATE).toString(), obj.get(Post.TIME).toString(),
-                    u, obj.get(Post.MESSAGE).toString(), subject);
+            Post post = new Post(obj.getObjectId(), obj.getString(Post.DATE), obj.getString(Post.TIME),
+                    u, obj.getString(Post.MESSAGE), subject);
             posts.add(post);
         }
 

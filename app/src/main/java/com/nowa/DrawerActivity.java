@@ -1,7 +1,10 @@
 package com.nowa;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +43,10 @@ public class DrawerActivity extends AppCompatActivity {
                 .withThreeSmallProfileImages(false)
                 .withHeaderBackground(R.color.primary)
                 .addProfiles(
-                        new ProfileDrawerItem().withName(Parameter.user.getLogin()).withIcon(R.drawable.material_drawer_circle_mask)
+                        Parameter.user.getLogin().equals("segundo2") ?
+                            new ProfileDrawerItem().withName(Parameter.user.getLogin()).withIcon(R.drawable.segundo2)
+                            :
+                            new ProfileDrawerItem().withName(Parameter.user.getLogin()).withIcon(R.drawable.material_drawer_circle_mask)
                 )
                 .build();
 
@@ -119,16 +125,5 @@ public class DrawerActivity extends AppCompatActivity {
         Intent i = new Intent(DrawerActivity.this, FeedActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
-    }
-
-    public void notifyUser() {
-        try {
-            ParsePush push = new ParsePush();
-            push.setMessage("New Post");
-            push.sendInBackground();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

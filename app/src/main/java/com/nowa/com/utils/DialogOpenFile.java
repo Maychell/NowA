@@ -176,6 +176,7 @@ public class DialogOpenFile extends DialogFragment {
                     com.nowa.com.domain.File newFile = new com.nowa.com.domain.File();
                     newFile.setName(chosenFile);
                     String[] format = chosenFile.split(".");
+                    newFile.setPath(path.getAbsolutePath());
                     if (format != null && format.length > 0)
                         newFile.setFormat(format[format.length - 1]);
                     //filesToUpload.add(newFile);

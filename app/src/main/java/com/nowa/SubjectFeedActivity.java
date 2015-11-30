@@ -1,5 +1,7 @@
 package com.nowa;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,7 +50,8 @@ public class SubjectFeedActivity extends DrawerActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        loadFeed();
+        //loadFeed();
+        new ProgressTask(Parameter.ACTION_LOAD_FEED).execute();
 
         loadDrawer(savedInstanceState);
     }
@@ -63,12 +66,52 @@ public class SubjectFeedActivity extends DrawerActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showAdapter() {
         if(posts != null && !posts.isEmpty()) {
             mAdapter = new FeedAdapter(this, posts);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             Toast.makeText(this, "Não existem postagens para a turma: " + subject.getName(), Toast.LENGTH_SHORT).show();
             finish();
+        }
+    }
+
+    public class ProgressTask extends AsyncTask<String, Void, Boolean> {
+
+        private int action;
+
+        public ProgressTask(int action) {
+            this.action = action;
+            dialog = new ProgressDialog(SubjectFeedActivity.this);
+        }
+
+        private ProgressDialog dialog;
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            if(action == Parameter.ACTION_LOAD_FEED)
+                loadFeed();
+            return true;
+        }
+
+        protected void onPreExecute() {
+            this.dialog.setMessage("Please wait...");
+            this.dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            try {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                if(action == Parameter.ACTION_LOAD_FEED)
+                    showAdapter();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

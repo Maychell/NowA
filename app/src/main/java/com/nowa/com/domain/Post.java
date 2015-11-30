@@ -1,5 +1,7 @@
 package com.nowa.com.domain;
 
+import java.util.List;
+
 /**
  * Created by maychellfernandesdeoliveira on 05/10/2015.
  */
